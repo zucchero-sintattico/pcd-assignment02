@@ -1,3 +1,4 @@
+
 plugins {
     id("java")
 }
@@ -10,10 +11,25 @@ repositories {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }
 
-tasks.test {
+tasks.getByName<Test>("test") {
     useJUnitPlatform()
+}
+
+// create task for run Main
+tasks.register<JavaExec>("runMain") {
+    group = "Verification"
+    description = "Run the main class"
+    mainClass.set("Main")
+    classpath = sourceSets["main"].runtimeClasspath
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+        vendor.set(JvmVendorSpec.ADOPTIUM)
+    }
 }
