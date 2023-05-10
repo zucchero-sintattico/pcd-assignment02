@@ -26,10 +26,3 @@ tasks.register<JavaExec>("runMain") {
     mainClass.set("Main")
     classpath = sourceSets["main"].runtimeClasspath
 }
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
-        vendor.set(JvmVendorSpec.ADOPTIUM)
-    }
-}
