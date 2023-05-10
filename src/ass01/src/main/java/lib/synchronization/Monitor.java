@@ -1,4 +1,4 @@
-package lib.synchronization;
+package assignment02.lib.synchronization;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -13,6 +13,7 @@ import java.util.function.Supplier;
  */
 public abstract class Monitor {
     private final Lock mutex = new ReentrantLock();
+
     protected final Condition newCondition() {
         return mutex.newCondition();
     }

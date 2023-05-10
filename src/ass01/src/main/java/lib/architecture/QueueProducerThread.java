@@ -1,9 +1,10 @@
-package lib.architecture;
+package assignment02.lib.architecture;
 
-import lib.synchronization.QueueMonitor;
+import assignment02.lib.synchronization.QueueMonitor;
 
 /**
  * Thread that produces values to a queue monitor.
+ *
  * @param <T> Type of values to produce.
  * @see QueueMonitor
  */

@@ -1,6 +1,6 @@
 package assignment.queue;
 
-import lib.synchronization.QueueMonitor;
+import assignment02.lib.synchronization.QueueMonitor;
 
 import java.nio.file.Path;
 

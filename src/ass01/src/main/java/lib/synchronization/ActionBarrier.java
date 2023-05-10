@@ -1,4 +1,4 @@
-package lib.synchronization;
+package assignment02.lib.synchronization;
 
 import java.util.concurrent.locks.Condition;
 
