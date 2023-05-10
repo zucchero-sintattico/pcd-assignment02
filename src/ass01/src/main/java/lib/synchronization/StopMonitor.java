@@ -1,4 +1,4 @@
-package lib.synchronization;
+package assignment02.lib.synchronization;
 
 public class StopMonitor extends Monitor {
     private boolean toBeStopped = false;

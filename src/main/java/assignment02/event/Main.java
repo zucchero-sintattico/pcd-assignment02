@@ -1,4 +1,4 @@
-package event;
+package assignment02.event;
 
 public class Main {
     public static void main(String[] args) {

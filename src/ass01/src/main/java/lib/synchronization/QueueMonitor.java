@@ -1,6 +1,6 @@
-package lib.synchronization;
+package assignment02.lib.synchronization;
 
-import lib.utils.CloseableQueue;
+import assignment02.lib.utils.CloseableQueue;
 
 import java.util.Optional;
 import java.util.Queue;

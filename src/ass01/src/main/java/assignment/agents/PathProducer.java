@@ -2,9 +2,9 @@ package assignment.agents;
 
 import assignment.logger.Logger;
 import assignment.logger.LoggerMonitor;
-import lib.architecture.QueueProducerThread;
-import lib.synchronization.QueueMonitor;
-import lib.synchronization.StopMonitor;
+import assignment02.lib.architecture.QueueProducerThread;
+import assignment02.lib.synchronization.QueueMonitor;
+import assignment02.lib.synchronization.StopMonitor;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -44,7 +44,7 @@ public class PathProducer extends QueueProducerThread<Path> {
                     .filter(this::isJavaFile)
                     .forEach((f) -> {
                         try {
-                            if (this.withSleep){
+                            if (this.withSleep) {
                                 Thread.sleep(10);
                             }
                         } catch (InterruptedException e) {

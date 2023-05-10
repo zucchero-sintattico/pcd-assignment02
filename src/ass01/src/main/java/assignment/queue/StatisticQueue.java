@@ -1,7 +1,7 @@
 package assignment.queue;
 
 import assignment.Statistic;
-import lib.synchronization.QueueMonitor;
+import assignment02.lib.synchronization.QueueMonitor;
 
 /**
  * Queue of statistics.

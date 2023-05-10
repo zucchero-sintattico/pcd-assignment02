@@ -1,4 +1,6 @@
-package lib.utils;
-import lib.queue.Queue;
+package assignment02.lib.utils;
 
-public interface CloseableQueue<T> extends Queue<T>, Closeable {}
+import assignment02.lib.queue.Queue;
+
+public interface CloseableQueue<T> extends Queue<T>, Closeable {
+}

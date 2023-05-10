@@ -1,4 +1,4 @@
-import lib.synchronization.ActionBarrier;
+import assignment02.lib.synchronization.ActionBarrier;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;

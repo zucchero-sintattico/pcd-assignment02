@@ -6,9 +6,9 @@ import assignment.agents.StatisticConsumer;
 import assignment.mvc.model.Model;
 import assignment.queue.PathQueue;
 import assignment.queue.StatisticQueue;
-import lib.synchronization.ActionBarrier;
-import lib.synchronization.Barrier;
-import lib.synchronization.StopMonitor;
+import assignment02.lib.synchronization.ActionBarrier;
+import assignment02.lib.synchronization.Barrier;
+import assignment02.lib.synchronization.StopMonitor;
 
 import java.nio.file.Path;
 import java.util.Set;

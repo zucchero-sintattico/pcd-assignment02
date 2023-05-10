@@ -5,9 +5,9 @@ import assignment.logger.Logger;
 import assignment.logger.LoggerMonitor;
 import assignment.queue.PathQueue;
 import assignment.queue.StatisticQueue;
-import lib.architecture.QueueConsumerThread;
-import lib.synchronization.Barrier;
-import lib.synchronization.StopMonitor;
+import assignment02.lib.architecture.QueueConsumerThread;
+import assignment02.lib.synchronization.Barrier;
+import assignment02.lib.synchronization.StopMonitor;
 
 import java.io.IOException;
 import java.nio.file.Files;

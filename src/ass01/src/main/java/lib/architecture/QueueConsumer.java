@@ -1,4 +1,4 @@
-package lib.architecture;
+package assignment02.lib.architecture;
 
 public interface QueueConsumer<T> extends Consumer<T> {
     void onQueueClosed();

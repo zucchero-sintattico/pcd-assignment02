@@ -1,4 +1,4 @@
-package lib.queue;
+package assignment02.lib.queue;
 
 import java.util.Optional;
 

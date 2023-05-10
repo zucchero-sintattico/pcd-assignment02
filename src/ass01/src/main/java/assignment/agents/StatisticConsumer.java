@@ -5,8 +5,8 @@ import assignment.logger.Logger;
 import assignment.logger.LoggerMonitor;
 import assignment.mvc.model.Model;
 import assignment.queue.StatisticQueue;
-import lib.architecture.QueueConsumerThread;
-import lib.synchronization.StopMonitor;
+import assignment02.lib.architecture.QueueConsumerThread;
+import assignment02.lib.synchronization.StopMonitor;
 
 
 /**
