@@ -1,12 +1,15 @@
 package assignment02.event;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import io.vertx.core.Future;
+import io.vertx.core.Verticle;
+import io.vertx.core.Vertx;
+
+import java.nio.file.Path;
 
 public class Main {
-    public static void main(String[] args) {
-        ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();
-        System.out.println("Hello World!");
+    public static void main(String[] args) throws Exception {
+        EventBasedSourceAnalyser eventBasedSourceAnalyser = new EventBasedSourceAnalyser();
+        eventBasedSourceAnalyser.analyzeSources(Path.of("."));
     }
 
 }

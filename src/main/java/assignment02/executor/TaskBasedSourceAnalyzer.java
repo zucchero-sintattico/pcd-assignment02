@@ -1,6 +1,6 @@
 package assignment02.executor;
 
-import assignment02.SourceAnalyser;
+import assignment02.SourceAnalyzer;
 import assignment02.Statistic;
 import assignment02.lib.LiveReport;
 import assignment02.lib.LiveReportImpl;
@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class TaskBasedSourceAnalyzer implements SourceAnalyser {
+public class TaskBasedSourceAnalyzer implements SourceAnalyzer {
 
     private final ReportConfiguration configuration;
     private final LiveReport liveReport = new LiveReportImpl();

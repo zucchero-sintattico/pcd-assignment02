@@ -1,6 +1,7 @@
 package assignment02.lib;
 
 import assignment02.Statistic;
+import assignment02.lib.*;
 
 import java.util.concurrent.CompletableFuture;
 

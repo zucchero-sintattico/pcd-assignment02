@@ -12,6 +12,10 @@ repositories {
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    implementation("io.vertx:vertx-core:4.4.1")
+    implementation("io.vertx:vertx-web:4.4.1")
+    implementation("io.vertx:vertx-web-client:4.4.1")
+    runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.76.Final:osx-aarch_64")
 }
 
 tasks.getByName<Test>("test") {
