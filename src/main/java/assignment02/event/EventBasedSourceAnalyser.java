@@ -10,14 +10,14 @@ import assignment02.SourceAnalyzer;
 import java.nio.file.Path;
 
 public class EventBasedSourceAnalyser implements SourceAnalyzer {
-    LiveReport liveReport = new LiveReportImpl();
+    private LiveReport liveReport = new LiveReportImpl();
+    private final Vertx vertx = Vertx.vertx();
+    private final Verticle pathProducerVerticle = new PathProducerVerticle();
+    private final Verticle pathConsumerVerticle = new PathConsumerVerticle();
+
 
     @Override
     public LiveReport analyzeSources(final Path directory) {
-        Vertx vertx = Vertx.vertx();
-        Verticle pathProducerVerticle = new PathProducerVerticle();
-        Verticle pathConsumerVerticle = new PathConsumerVerticle();
-
         Future<String> producerId = vertx.deployVerticle(pathProducerVerticle)
                 .onComplete(ar -> {
                     if (ar.succeeded()) {
@@ -36,7 +36,6 @@ public class EventBasedSourceAnalyser implements SourceAnalyzer {
                     }
                 });
 
-        vertx.close();
 
         return liveReport;
 
