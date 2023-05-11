@@ -1,4 +1,16 @@
 package assignment02.event;
 
-public interface PathProducerVerticle {
+import io.vertx.core.AbstractVerticle;
+
+public class PathProducerVerticle extends AbstractVerticle {
+
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void stop() {
+
+    }
 }
