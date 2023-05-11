@@ -1,6 +1,10 @@
 package assignment02.executor;
 
-import assignment02.*;
+import assignment02.SourceAnalyser;
+import assignment02.Statistic;
+import assignment02.lib.LiveReport;
+import assignment02.lib.LiveReportImpl;
+import assignment02.lib.ReportConfiguration;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,10 +18,15 @@ public class TaskBasedSourceAnalyzer implements SourceAnalyser {
     final ReportConfiguration configuration;
     final LiveReport liveReport = new LiveReportImpl();
     final ExecutorService pathProducerExecutor = Executors.newSingleThreadExecutor();
-    final ExecutorService pathConsumerExecutor = Executors.newCachedThreadPool();
+    final ExecutorService pathConsumerExecutor;
+
+    public TaskBasedSourceAnalyzer(final ReportConfiguration configuration, final ExecutorService pathConsumerExecutor) {
+        this.configuration = configuration;
+        this.pathConsumerExecutor = pathConsumerExecutor;
+    }
 
     public TaskBasedSourceAnalyzer(final ReportConfiguration configuration) {
-        this.configuration = configuration;
+        this(configuration, Executors.newCachedThreadPool());
     }
 
     private void analyzeFileTask(final Path path) {
@@ -50,5 +59,4 @@ public class TaskBasedSourceAnalyzer implements SourceAnalyser {
         this.pathProducerExecutor.submit(() -> this.scanTask(directory));
         return this.liveReport;
     }
-
 }

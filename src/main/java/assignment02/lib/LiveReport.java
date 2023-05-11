@@ -1,11 +1,12 @@
-package assignment02;
+package assignment02.lib;
 
-import java.nio.file.Path;
+import assignment02.Statistic;
+
 import java.util.concurrent.CompletableFuture;
 
 public interface LiveReport {
 
-    CompletableFuture<Report> getReport(final Path directory);
+    CompletableFuture<Report> getReport();
 
     void setReportConfiguration(final ReportConfiguration configuration);
 

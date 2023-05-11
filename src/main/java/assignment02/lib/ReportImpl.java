@@ -1,4 +1,6 @@
-package assignment02;
+package assignment02.lib;
+
+import assignment02.Statistic;
 
 import java.util.*;
 

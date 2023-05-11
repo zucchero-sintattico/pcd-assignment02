@@ -1,17 +1,14 @@
 package assignment02.executor;
 
-import assignment02.Report;
-import assignment02.ReportConfiguration;
 import assignment02.SourceAnalyser;
+import assignment02.lib.ReportConfiguration;
 
 import java.nio.file.Path;
-import java.util.concurrent.CompletableFuture;
 
-public class Main {
+public class ExecutorMain {
     public static void main(String[] args) {
         final ReportConfiguration configuration = new ReportConfiguration(3, 10, 20);
         final SourceAnalyser sourceAnalyser = new TaskBasedSourceAnalyzer(configuration);
-        CompletableFuture<Report> report = sourceAnalyser.getReport(Path.of("."));
-        report.thenAccept(System.out::println);
+        sourceAnalyser.getReport(Path.of(".")).thenAccept(System.out::println);
     }
 }
