@@ -15,10 +15,10 @@ import java.util.concurrent.TimeUnit;
 
 public class TaskBasedSourceAnalyzer implements SourceAnalyser {
 
-    final ReportConfiguration configuration;
-    final LiveReport liveReport = new LiveReportImpl();
-    final ExecutorService pathProducerExecutor = Executors.newSingleThreadExecutor();
-    final ExecutorService pathConsumerExecutor;
+    private final ReportConfiguration configuration;
+    private final LiveReport liveReport = new LiveReportImpl();
+    private final ExecutorService pathProducerExecutor = Executors.newSingleThreadExecutor();
+    private final ExecutorService pathConsumerExecutor;
 
     public TaskBasedSourceAnalyzer(final ReportConfiguration configuration, final ExecutorService pathConsumerExecutor) {
         this.configuration = configuration;

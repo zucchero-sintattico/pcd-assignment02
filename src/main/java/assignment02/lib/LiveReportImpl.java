@@ -6,9 +6,9 @@ import java.util.concurrent.CompletableFuture;
 
 public class LiveReportImpl extends Monitor implements LiveReport {
 
-    final Report report = new ReportImpl();
+    private final Report report = new ReportImpl();
 
-    final CompletableFuture<Report> futureReport = new CompletableFuture<>();
+    private final CompletableFuture<Report> futureReport = new CompletableFuture<>();
 
     @Override
     public CompletableFuture<Report> getReport() {
