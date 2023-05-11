@@ -1,6 +1,5 @@
 package assignment02.executor;
 
-import assignment02.SourceAnalyser;
 import assignment02.lib.ReportConfiguration;
 
 import java.nio.file.Path;

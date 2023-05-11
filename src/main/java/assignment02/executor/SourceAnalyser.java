@@ -1,4 +1,4 @@
-package assignment02;
+package assignment02.executor;
 
 import assignment02.lib.LiveReport;
 import assignment02.lib.Report;

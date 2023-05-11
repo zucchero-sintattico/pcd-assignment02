@@ -1,5 +1,7 @@
 package assignment02;
 
+import assignment02.executor.SourceAnalyser;
+
 import java.nio.file.Path;
 
 public class GenericMain {
