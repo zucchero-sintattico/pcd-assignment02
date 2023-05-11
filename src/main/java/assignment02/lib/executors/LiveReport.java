@@ -1,6 +1,8 @@
-package assignment02.lib;
+package assignment02.lib.executors;
 
 import assignment02.Statistic;
+import assignment02.lib.Report;
+import assignment02.lib.ReportConfiguration;
 
 import java.util.concurrent.CompletableFuture;
 

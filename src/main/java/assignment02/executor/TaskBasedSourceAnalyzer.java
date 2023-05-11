@@ -1,8 +1,9 @@
 package assignment02.executor;
 
+import assignment02.SourceAnalyser;
 import assignment02.Statistic;
-import assignment02.lib.LiveReport;
-import assignment02.lib.LiveReportImpl;
+import assignment02.lib.executors.LiveReport;
+import assignment02.lib.executors.LiveReportImpl;
 import assignment02.lib.ReportConfiguration;
 
 import java.io.IOException;

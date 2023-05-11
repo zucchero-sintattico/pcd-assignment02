@@ -1,6 +1,6 @@
 package assignment02.virtual;
 
-import assignment02.executor.SourceAnalyser;
+import assignment02.SourceAnalyser;
 import assignment02.lib.ReportConfiguration;
 
 import java.nio.file.Path;

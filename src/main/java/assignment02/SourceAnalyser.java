@@ -1,6 +1,6 @@
-package assignment02.executor;
+package assignment02;
 
-import assignment02.lib.LiveReport;
+import assignment02.lib.executors.LiveReport;
 import assignment02.lib.Report;
 
 import java.nio.file.Path;
