@@ -1,4 +1,4 @@
-package assignment02.lib.executors;
+package assignment02.lib;
 
 import assignment02.Statistic;
 import assignment02.lib.Report;

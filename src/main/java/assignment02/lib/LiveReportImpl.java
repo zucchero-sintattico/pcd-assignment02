@@ -1,10 +1,7 @@
-package assignment02.lib.executors;
+package assignment02.lib;
 
 import assignment02.Statistic;
-import assignment02.lib.Monitor;
-import assignment02.lib.Report;
-import assignment02.lib.ReportConfiguration;
-import assignment02.lib.ReportImpl;
+import assignment02.lib.*;
 
 import java.util.concurrent.CompletableFuture;
 

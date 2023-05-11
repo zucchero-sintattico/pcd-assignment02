@@ -1,7 +1,7 @@
 package assignment02.event;
 
-import assignment02.lib.executors.LiveReport;
-import assignment02.lib.executors.LiveReportImpl;
+import assignment02.lib.LiveReport;
+import assignment02.lib.LiveReportImpl;
 import io.vertx.core.Future;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
