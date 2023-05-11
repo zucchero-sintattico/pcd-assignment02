@@ -5,11 +5,11 @@ import assignment02.lib.executors.LiveReportImpl;
 import io.vertx.core.Future;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
-import assignment02.SourceAnalyser;
+import assignment02.SourceAnalyzer;
 
 import java.nio.file.Path;
 
-public class EventBasedSourceAnalyser implements SourceAnalyser {
+public class EventBasedSourceAnalyser implements SourceAnalyzer {
     LiveReport liveReport = new LiveReportImpl();
 
     @Override
