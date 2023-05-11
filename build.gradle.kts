@@ -1,4 +1,3 @@
-
 plugins {
     id("java")
 }
@@ -25,4 +24,12 @@ tasks.register<JavaExec>("runMain") {
     description = "Run the main class"
     mainClass.set("Main")
     classpath = sourceSets["main"].runtimeClasspath
+}
+
+tasks.withType<JavaCompile> {
+    options.compilerArgs.add("--enable-preview")
+}
+
+tasks.withType<JavaExec> {
+    jvmArgs = listOf("--enable-preview")
 }

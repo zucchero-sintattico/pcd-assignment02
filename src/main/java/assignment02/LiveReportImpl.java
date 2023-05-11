@@ -2,7 +2,6 @@ package assignment02;
 
 import assignment02.lib.Monitor;
 
-import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
 public class LiveReportImpl extends Monitor implements LiveReport {
@@ -12,7 +11,7 @@ public class LiveReportImpl extends Monitor implements LiveReport {
     final CompletableFuture<Report> futureReport = new CompletableFuture<>();
 
     @Override
-    public CompletableFuture<Report> getReport(Path directory) {
+    public CompletableFuture<Report> getReport() {
         return futureReport;
     }
 

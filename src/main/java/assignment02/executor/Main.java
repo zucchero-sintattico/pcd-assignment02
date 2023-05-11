@@ -1,5 +1,6 @@
 package assignment02.executor;
 
+import assignment02.LiveReport;
 import assignment02.Report;
 import assignment02.ReportConfiguration;
 import assignment02.SourceAnalyser;
@@ -11,7 +12,8 @@ public class Main {
     public static void main(String[] args) {
         final ReportConfiguration configuration = new ReportConfiguration(3, 10, 20);
         final SourceAnalyser sourceAnalyser = new TaskBasedSourceAnalyzer(configuration);
-        CompletableFuture<Report> report = sourceAnalyser.getReport(Path.of("."));
+        LiveReport liveReport = sourceAnalyser.analyzeSources(Path.of("."));
+        CompletableFuture<Report> report = liveReport.getReport();
         report.thenAccept(System.out::println);
     }
 }
