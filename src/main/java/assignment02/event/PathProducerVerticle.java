@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class PathProducerVerticle extends AbstractVerticle {
 
+    private int count = 0;
     final String path;
 
     public PathProducerVerticle(final String path) {
@@ -20,7 +21,7 @@ public class PathProducerVerticle extends AbstractVerticle {
     private Future<Void> scanFolderRecursive(final String path) {
         final Promise<Void> promise = Promise.promise();
         vertx.fileSystem().readDir(path).onSuccess(result -> {
-            System.out.println("Scanning " + path);
+            System.out.println(Thread.currentThread().getName() + " Scanning " + path);
             final List<Future> futures = result.stream()
                     .map(file -> {
                         final Promise<Void> filePromise = Promise.promise();
@@ -31,7 +32,8 @@ public class PathProducerVerticle extends AbstractVerticle {
                                 });
                             } else {
                                 if (file.endsWith(".java")) {
-                                    System.out.println("Pushing file: " + file + " to event bus");
+                                    count++;
+                                    System.out.println(Thread.currentThread().getName() + " Pushing " + file + " to event bus");
                                     vertx.eventBus().send("newPath", file);
                                 }
                                 filePromise.complete();
@@ -40,8 +42,8 @@ public class PathProducerVerticle extends AbstractVerticle {
                         return filePromise.future();
                     })
                     .collect(Collectors.toList());
-            CompositeFuture.join(futures).onSuccess(x -> {
-                System.out.println("Completed scanning " + path);
+            CompositeFuture.all(futures).onSuccess(x -> {
+                System.out.println(Thread.currentThread().getName() + " Completed scanning " + path);
                 promise.complete();
             });
         });
@@ -50,14 +52,15 @@ public class PathProducerVerticle extends AbstractVerticle {
 
     @Override
     public void start() {
+        System.out.println(Thread.currentThread().getName() + " PathProducerVerticle started");
         scanFolderRecursive(path).onSuccess(x -> {
-            System.out.println("Pushing completed to event bus");
+            System.out.println(Thread.currentThread().getName() + " Pushing newPath.complete to event bus");
             vertx.eventBus().send("newPath.completed", "completed");
         });
     }
 
     @Override
     public void stop() {
-        System.out.println("PathProducerVerticle stopped");
+        System.out.println(Thread.currentThread().getName() + " PathProducerVerticle stopped (" + count + " files)");
     }
 }

@@ -15,7 +15,6 @@ import java.nio.file.Path;
 public class EventBasedSourceAnalyser implements SourceAnalyzer {
     private final ReportConfiguration configuration;
     private LiveReport liveReport = new LiveReportImpl();
-    private final Vertx vertx = Vertx.vertx();
 
     public EventBasedSourceAnalyser(final ReportConfiguration configuration) {
         this.configuration = configuration;
@@ -25,7 +24,8 @@ public class EventBasedSourceAnalyser implements SourceAnalyzer {
     public LiveReport analyzeSources(final Path directory) {
         this.liveReport.setReportConfiguration(this.configuration);
 
-        vertx.deployVerticle(new VertxCloserVerticle());
+        final Vertx vertx = Vertx.vertx();
+        vertx.deployVerticle(new VertxCloserVerticle(this.liveReport));
         vertx.deployVerticle(new PathConsumerVerticle());
         vertx.deployVerticle(new PathProducerVerticle(directory.toString()));
 
