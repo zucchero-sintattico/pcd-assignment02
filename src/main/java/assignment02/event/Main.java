@@ -14,5 +14,4 @@ public class Main {
         final SourceAnalyzer eventBasedSourceAnalyser = new EventBasedSourceAnalyser(configuration);
         eventBasedSourceAnalyser.getReport(Path.of("src")).thenAccept(System.out::println);
     }
-
 }

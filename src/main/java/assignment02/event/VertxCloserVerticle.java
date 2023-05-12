@@ -16,8 +16,8 @@ public class VertxCloserVerticle extends AbstractVerticle {
         System.out.println(Thread.currentThread().getName() + " VertxCloserVerticle started");
         vertx.eventBus().consumer("newStatistic.completed", message -> {
             System.out.println(Thread.currentThread().getName() + " VertxCloserVerticle: " + message.body());
-            vertx.close();
             liveReport.complete();
+            vertx.close();
         });
     }
 

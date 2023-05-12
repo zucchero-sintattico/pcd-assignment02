@@ -1,10 +1,10 @@
 package assignment02.event;
 
-import assignment02.Statistic;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 
-import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PathConsumerVerticle extends AbstractVerticle {
@@ -14,17 +14,23 @@ public class PathConsumerVerticle extends AbstractVerticle {
     @Override
     public void start() {
         System.out.println(Thread.currentThread().getName() + " PathConsumerVerticle started");
+        final List<Future> futures = new ArrayList<>();
         vertx.eventBus().consumer("newPath", message -> {
             System.out.println(Thread.currentThread().getName() + " Pulling newPath from event bus");
             // count file lines
             count++;
-            long lines = vertx.fileSystem().readFileBlocking(message.body().toString()).toString().lines().count();
-            System.out.println(Thread.currentThread().getName() + " Pushing newStatistic to event bus");
-            vertx.eventBus().send("newStatistic", lines);
+            final Future future = vertx.fileSystem().readFile(message.body().toString()).onSuccess(result -> {
+                long lines = result.toString().lines().count();
+                System.out.println(Thread.currentThread().getName() + " Pushing newStatistic to event bus");
+                vertx.eventBus().send("newStatistic", lines);
+            });
+            futures.add(future);
         });
         vertx.eventBus().consumer("newPath.completed", message -> {
-            System.out.println(Thread.currentThread().getName() + " Pushing newStatistic.completed to event bus");
-            vertx.eventBus().send("newStatistic.completed", "completed");
+            CompositeFuture.all(futures).onSuccess(x -> {
+                System.out.println(Thread.currentThread().getName() + " Pushing newStatistic.completed to event bus");
+                vertx.eventBus().send("newStatistic.completed", "completed");
+            });
         });
     }
 
