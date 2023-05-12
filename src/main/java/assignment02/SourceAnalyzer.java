@@ -1,6 +1,6 @@
 package assignment02;
 
-import assignment02.lib.report.LiveReport;
+import assignment02.lib.report.ObservableAsyncReport;
 import assignment02.lib.report.Report;
 
 import java.nio.file.Path;
@@ -12,6 +12,6 @@ public interface SourceAnalyzer {
         return this.analyzeSources(directory).getReport();
     }
 
-    LiveReport analyzeSources(final Path directory);
+    ObservableAsyncReport analyzeSources(final Path directory);
 
 }

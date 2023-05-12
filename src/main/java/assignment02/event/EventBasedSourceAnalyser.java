@@ -1,22 +1,22 @@
 package assignment02.event;
 
 import assignment02.SourceAnalyzer;
-import assignment02.lib.report.LiveReport;
-import assignment02.lib.report.LiveReportImpl;
+import assignment02.lib.report.ObservableAsyncReport;
 import assignment02.lib.report.ReportConfiguration;
+import assignment02.lib.report.live.LiveReport;
 import io.vertx.core.Vertx;
 
 import java.nio.file.Path;
 
 public class EventBasedSourceAnalyser implements SourceAnalyzer {
-    private final LiveReport liveReport = new LiveReportImpl();
+    private final LiveReport liveReport = new LiveReport();
 
     public EventBasedSourceAnalyser(final ReportConfiguration configuration) {
         this.liveReport.setReportConfiguration(configuration);
     }
 
     @Override
-    public LiveReport analyzeSources(final Path directory) {
+    public ObservableAsyncReport analyzeSources(final Path directory) {
         final Vertx vertx = Vertx.vertx();
         vertx.deployVerticle(new VertxCloserVerticle());
         vertx.deployVerticle(new StatisticConsumerVerticle(liveReport));

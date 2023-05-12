@@ -1,10 +1,6 @@
 package assignment02.lib.report;
 
-import java.util.concurrent.CompletableFuture;
-
-public interface LiveReport {
-
-    CompletableFuture<Report> getReport();
+public interface ReportAsyncBuilder {
 
     void setReportConfiguration(final ReportConfiguration configuration);
 

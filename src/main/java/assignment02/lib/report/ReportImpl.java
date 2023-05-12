@@ -1,64 +1,30 @@
 package assignment02.lib.report;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class ReportImpl implements Report {
 
-    private final List<Statistic> allStats = new ArrayList<>();
-    private final List<Statistic> topStats = new ArrayList<>();
-    private final Map<Range, Integer> distribution = new HashMap<>();
-
+    private final List<Statistic> statistics;
+    private final List<Statistic> topStatistics;
+    private final Map<Range, Integer> distribution;
     private ReportConfiguration configuration;
 
-    @Override
-    public void setReportConfiguration(ReportConfiguration configuration) {
-        this.configuration = configuration;
-
-        // Build ranges
-        final int rangeSize = this.configuration.maxl / this.configuration.nl;
-        for (int i = 0; i < this.configuration.nl; i++) {
-            this.distribution.put(new Range(i * rangeSize, (i + 1) * rangeSize), 0);
-        }
-        this.distribution.put(new Range(this.configuration.nl * rangeSize, Integer.MAX_VALUE), 0);
+    public ReportImpl(final List<Statistic> statistics, final List<Statistic> topStatistic, final Map<Range, Integer> distribution) {
+        this.statistics = statistics;
+        this.topStatistics = topStatistic;
+        this.distribution = distribution;
     }
-
-    private void insertTopSorted(Statistic statistic) {
-        this.topStats.add(statistic);
-        this.topStats.sort(Comparator.comparingInt(x -> -x.linesCount));
-    }
-
-    @Override
-    public void addStatistic(Statistic statistic) {
-        this.allStats.add(statistic);
-
-        // update top
-        if (this.topStats.size() < this.configuration.n) {
-            this.insertTopSorted(statistic);
-        } else {
-            if (this.topStats.get(this.configuration.n - 1).linesCount < statistic.linesCount) {
-                this.topStats.remove(this.configuration.n - 1);
-                this.insertTopSorted(statistic);
-            }
-        }
-
-        // update distribution
-        int linesCount = statistic.linesCount;
-        for (Range range : this.distribution.keySet()) {
-            if (range.getStart() <= linesCount && linesCount < range.getEnd()) {
-                this.distribution.put(range, this.distribution.get(range) + 1);
-                break;
-            }
-        }
-    }
-
+    
     @Override
     public Integer getNumberOfFiles() {
-        return this.allStats.size();
+        return this.statistics.size();
     }
 
     @Override
     public List<Statistic> getTop() {
-        return Collections.unmodifiableList(this.topStats);
+        return Collections.unmodifiableList(this.topStatistics);
     }
 
     @Override
@@ -69,8 +35,8 @@ public class ReportImpl implements Report {
     @Override
     public String toString() {
         return "ReportImpl{" + "\n" +
-                "allStats=" + allStats + "\n" +
-                "topStats=" + topStats + "\n" +
+                "allStats=" + statistics + "\n" +
+                "topStats=" + topStatistics + "\n" +
                 "distribution=" + distribution + "\n";
     }
 }

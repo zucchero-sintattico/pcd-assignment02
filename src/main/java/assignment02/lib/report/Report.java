@@ -9,9 +9,4 @@ public interface Report {
     List<Statistic> getTop();
 
     Map<Range, Integer> getDistribution();
-
-    void setReportConfiguration(ReportConfiguration configuration);
-
-    void addStatistic(Statistic statistic);
-
 }

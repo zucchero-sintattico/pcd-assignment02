@@ -1,10 +1,10 @@
 package assignment02.executor;
 
 import assignment02.SourceAnalyzer;
-import assignment02.lib.report.LiveReport;
-import assignment02.lib.report.LiveReportImpl;
+import assignment02.lib.report.ObservableAsyncReport;
 import assignment02.lib.report.ReportConfiguration;
 import assignment02.lib.report.Statistic;
+import assignment02.lib.report.live.LiveReport;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class TaskBasedSourceAnalyzer implements SourceAnalyzer {
 
     private final ReportConfiguration configuration;
-    private final LiveReport liveReport = new LiveReportImpl();
+    private final LiveReport liveReport = new LiveReport();
     private final ExecutorService pathProducerExecutor = Executors.newSingleThreadExecutor();
     private final ExecutorService pathConsumerExecutor;
 
@@ -54,7 +54,7 @@ public class TaskBasedSourceAnalyzer implements SourceAnalyzer {
     }
 
     @Override
-    public LiveReport analyzeSources(final Path directory) {
+    public ObservableAsyncReport analyzeSources(final Path directory) {
         this.liveReport.setReportConfiguration(this.configuration);
         this.pathProducerExecutor.submit(() -> this.scanTask(directory));
         return this.liveReport;
