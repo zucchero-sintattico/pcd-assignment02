@@ -3,13 +3,14 @@ package assignment02.event;
 import assignment02.SourceAnalyzer;
 import assignment02.lib.report.ObservableAsyncReport;
 import assignment02.lib.report.ReportConfiguration;
+import assignment02.lib.report.live.ExecutorBasedLiveReport;
 import assignment02.lib.report.live.LiveReport;
 import io.vertx.core.Vertx;
 
 import java.nio.file.Path;
 
 public class EventBasedSourceAnalyser implements SourceAnalyzer {
-    private final LiveReport liveReport = new LiveReport();
+    private final LiveReport liveReport = new ExecutorBasedLiveReport();
 
     public EventBasedSourceAnalyser(final ReportConfiguration configuration) {
         this.liveReport.setReportConfiguration(configuration);

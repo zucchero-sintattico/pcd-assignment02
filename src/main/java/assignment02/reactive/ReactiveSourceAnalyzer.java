@@ -19,6 +19,7 @@ public class ReactiveSourceAnalyzer implements SourceAnalyzer {
     public ReactiveSourceAnalyzer(ReportConfiguration configuration) {
         this.liveReport.setReportConfiguration(configuration);
     }
+
     @Override
     public ObservableAsyncReport analyzeSources(Path directory) {
         // file walk
@@ -26,7 +27,7 @@ public class ReactiveSourceAnalyzer implements SourceAnalyzer {
             Files.walkFileTree(directory, new SimpleFileVisitor<>() {
                 @Override
                 public FileVisitResult visitFile(Path file, java.nio.file.attribute.BasicFileAttributes attrs) throws IOException {
-                    if(file.toString().endsWith(".java")){
+                    if (file.toString().endsWith(".java")) {
                         System.out.println("Found file: " + file);
                         emitter.onNext(file);
                     }
@@ -35,25 +36,27 @@ public class ReactiveSourceAnalyzer implements SourceAnalyzer {
             });
             emitter.onComplete();
         });
-        Observable<Statistic> statsObservable = Observable.create(emitter -> {
-            source.subscribe(p -> {
-                try {
-                    System.out.println(p + " : " + Files.readAllLines(p).size());
-                    emitter.onNext(new Statistic(p, Files.readAllLines(p).size()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            emitter.onComplete();
+        Observable<Statistic> statsObservable = source.map(p -> {
+            try {
+                System.out.println(p + " : " + Files.readAllLines(p).size());
+                return new Statistic(p, Files.readAllLines(p).size());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
         });
         statsObservable.subscribe(
-                liveReport::addStatistic,
+                (s) -> {
+                    liveReport.addStatistic(s);
+                    System.out.println("Statistic added: " + s);
+                },
                 Throwable::printStackTrace,
                 () -> {
                     liveReport.complete();
                     System.out.println("Finish, LiveReport completed");
                 }
         );
+
         return liveReport;
 
     }
