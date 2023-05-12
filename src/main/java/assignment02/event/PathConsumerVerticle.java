@@ -1,34 +1,38 @@
 package assignment02.event;
 
+import assignment02.Statistic;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("rawtypes")
 public class PathConsumerVerticle extends AbstractVerticle {
 
     private int count = 0;
 
     @Override
     public void start() {
-        System.out.println(Thread.currentThread().getName() + " PathConsumerVerticle started");
-        final List<Future> futures = new ArrayList<>();
+        log("PathConsumerVerticle started");
+        final List<Future> filesReadFutures = new ArrayList<>();
         vertx.eventBus().consumer("newPath", message -> {
-            System.out.println(Thread.currentThread().getName() + " Pulling newPath from event bus");
-            // count file lines
+            log("PathConsumerVerticle received newPath message");
             count++;
-            final Future future = vertx.fileSystem().readFile(message.body().toString()).onSuccess(result -> {
-                long lines = result.toString().lines().count();
-                System.out.println(Thread.currentThread().getName() + " Pushing newStatistic to event bus");
-                vertx.eventBus().send("newStatistic", lines);
+            final Future fileReadFuture = vertx.fileSystem().readFile(message.body().toString()).onSuccess(result -> {
+                int lines = result.toString().lines().toList().size();
+                final Statistic statistic = new Statistic(Path.of(message.body().toString()), lines);
+                log("Pushing newStatistic to event bus");
+                vertx.eventBus().send("newStatistic", statistic.toString());
             });
-            futures.add(future);
+            filesReadFutures.add(fileReadFuture);
         });
         vertx.eventBus().consumer("newPath.completed", message -> {
-            CompositeFuture.all(futures).onSuccess(x -> {
-                System.out.println(Thread.currentThread().getName() + " Pushing newStatistic.completed to event bus");
+            CompositeFuture.all(filesReadFutures).onSuccess(x -> {
+                log("PathConsumerVerticle completed, found " + count + " files");
+                log("PathConsumerVerticle sending newStatistic.completed message");
                 vertx.eventBus().send("newStatistic.completed", "completed");
             });
         });
@@ -36,6 +40,10 @@ public class PathConsumerVerticle extends AbstractVerticle {
 
     @Override
     public void stop() {
-        System.out.println(Thread.currentThread().getName() + " PathConsumerVerticle stopped (" + count + " files)");
+        log("PathConsumerVerticle stopped");
+    }
+
+    private void log(final String message) {
+        System.out.println("[" + Thread.currentThread().getName() + "] : " + message);
     }
 }

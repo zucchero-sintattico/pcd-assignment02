@@ -5,45 +5,46 @@ import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@SuppressWarnings("rawtypes")
 public class PathProducerVerticle extends AbstractVerticle {
 
-    private int count = 0;
     final String path;
+    private int count = 0;
 
     public PathProducerVerticle(final String path) {
         this.path = path;
     }
 
+    private Future scanElement(final String path) {
+        final Promise<Void> promise = Promise.promise();
+        vertx.fileSystem().lprops(path).onSuccess(fileProps -> {
+            if (fileProps.isDirectory()) {
+                scanFolderRecursive(path).onComplete(x -> {
+                    promise.complete();
+                });
+            } else {
+                if (path.endsWith(".java")) {
+                    count++;
+                    log("Pushing new path: '" + path + "' to event bus");
+                    vertx.eventBus().send("newPath", path);
+                }
+                promise.complete();
+            }
+        });
+        return promise.future();
+    }
+
     private Future<Void> scanFolderRecursive(final String path) {
         final Promise<Void> promise = Promise.promise();
         vertx.fileSystem().readDir(path).onSuccess(result -> {
-            System.out.println(Thread.currentThread().getName() + " Scanning " + path);
+            log("Scanning " + path);
             final List<Future> futures = result.stream()
-                    .map(file -> {
-                        final Promise<Void> filePromise = Promise.promise();
-                        vertx.fileSystem().lprops(file).onSuccess(fileProps -> {
-                            if (fileProps.isDirectory()) {
-                                scanFolderRecursive(file).onComplete(x -> {
-                                    filePromise.complete();
-                                });
-                            } else {
-                                if (file.endsWith(".java")) {
-                                    count++;
-                                    System.out.println(Thread.currentThread().getName() + " Pushing " + file + " to event bus");
-                                    vertx.eventBus().send("newPath", file);
-                                }
-                                filePromise.complete();
-                            }
-                        });
-                        return filePromise.future();
-                    })
-                    .collect(Collectors.toList());
+                    .map(this::scanElement)
+                    .toList();
             CompositeFuture.all(futures).onSuccess(x -> {
-                System.out.println(Thread.currentThread().getName() + " Completed scanning " + path);
+                log("Completed scanning " + path);
                 promise.complete();
             });
         });
@@ -52,15 +53,20 @@ public class PathProducerVerticle extends AbstractVerticle {
 
     @Override
     public void start() {
-        System.out.println(Thread.currentThread().getName() + " PathProducerVerticle started");
+        log("PathProducerVerticle started");
         scanFolderRecursive(path).onSuccess(x -> {
-            System.out.println(Thread.currentThread().getName() + " Pushing newPath.complete to event bus");
+            log("PathProducerVerticle completed, found " + count + " files");
+            log("PathProducerVerticle sending newPath.completed message");
             vertx.eventBus().send("newPath.completed", "completed");
         });
     }
 
     @Override
     public void stop() {
-        System.out.println(Thread.currentThread().getName() + " PathProducerVerticle stopped (" + count + " files)");
+        log("PathProducerVerticle stopped");
+    }
+
+    private void log(final String message) {
+        System.out.println("[" + Thread.currentThread().getName() + "] : " + message);
     }
 }

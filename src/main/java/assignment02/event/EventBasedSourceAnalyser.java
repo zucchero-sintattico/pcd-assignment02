@@ -15,13 +15,14 @@ public class EventBasedSourceAnalyser implements SourceAnalyzer {
     public EventBasedSourceAnalyser(final ReportConfiguration configuration) {
         this.configuration = configuration;
     }
-    
+
     @Override
     public LiveReport analyzeSources(final Path directory) {
         this.liveReport.setReportConfiguration(this.configuration);
 
         final Vertx vertx = Vertx.vertx();
-        vertx.deployVerticle(new VertxCloserVerticle(this.liveReport));
+        vertx.deployVerticle(new VertxCloserVerticle());
+        vertx.deployVerticle(new StatisticConsumerVerticle(this.liveReport));
         vertx.deployVerticle(new PathConsumerVerticle());
         vertx.deployVerticle(new PathProducerVerticle(directory.toString()));
 

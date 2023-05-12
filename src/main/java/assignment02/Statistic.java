@@ -7,12 +7,18 @@ import java.util.Objects;
  * Class for storing information about file and number of lines in it.
  */
 public final class Statistic {
+
     public final Path file;
     public final int linesCount;
 
     public Statistic(final Path file, final int linesCount) {
         this.linesCount = linesCount;
         this.file = file;
+    }
+
+    public static Statistic fromString(final String string) {
+        final String[] parts = string.split(";");
+        return new Statistic(Path.of(parts[0]), Integer.parseInt(parts[1]));
     }
 
     @Override
@@ -30,10 +36,7 @@ public final class Statistic {
 
     @Override
     public String toString() {
-        return "assignment02.Statistic{" +
-                "file=" + file +
-                ", linesCount=" + linesCount +
-                '}';
+        return file + ";" + linesCount;
     }
 }
 
