@@ -1,7 +1,7 @@
 package assignment02.event;
 
-import assignment02.Statistic;
-import assignment02.lib.LiveReport;
+import assignment02.lib.report.LiveReport;
+import assignment02.lib.report.Statistic;
 import io.vertx.core.AbstractVerticle;
 
 @SuppressWarnings("rawtypes")
@@ -9,7 +9,7 @@ public class StatisticConsumerVerticle extends AbstractVerticle {
 
     private final LiveReport liveReport;
     private final int count = 0;
-    
+
     public StatisticConsumerVerticle(final LiveReport liveReport) {
         this.liveReport = liveReport;
     }

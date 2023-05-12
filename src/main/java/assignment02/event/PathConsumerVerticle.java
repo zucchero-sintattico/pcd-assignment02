@@ -1,6 +1,6 @@
 package assignment02.event;
 
-import assignment02.Statistic;
+import assignment02.lib.report.Statistic;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;

@@ -1,10 +1,7 @@
 package assignment02.event;
 
 import assignment02.SourceAnalyzer;
-import assignment02.lib.ReportConfiguration;
-import io.vertx.core.Future;
-import io.vertx.core.Verticle;
-import io.vertx.core.Vertx;
+import assignment02.lib.report.ReportConfiguration;
 
 import java.nio.file.Path;
 

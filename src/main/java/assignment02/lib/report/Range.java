@@ -1,4 +1,4 @@
-package assignment02.lib;
+package assignment02.lib.report;
 
 import java.util.Objects;
 

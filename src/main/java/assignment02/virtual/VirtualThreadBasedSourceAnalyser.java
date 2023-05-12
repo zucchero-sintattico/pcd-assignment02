@@ -1,7 +1,7 @@
 package assignment02.virtual;
 
 import assignment02.executor.TaskBasedSourceAnalyzer;
-import assignment02.lib.ReportConfiguration;
+import assignment02.lib.report.ReportConfiguration;
 
 import java.util.concurrent.Executors;
 

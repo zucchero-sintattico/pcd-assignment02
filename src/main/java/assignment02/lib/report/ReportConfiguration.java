@@ -1,4 +1,4 @@
-package assignment02.lib;
+package assignment02.lib.report;
 
 public class ReportConfiguration {
     public final int n;

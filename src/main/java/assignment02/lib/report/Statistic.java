@@ -1,4 +1,4 @@
-package assignment02;
+package assignment02.lib.report;
 
 import java.nio.file.Path;
 import java.util.Objects;

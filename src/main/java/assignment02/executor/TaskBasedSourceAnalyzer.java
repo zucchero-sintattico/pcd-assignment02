@@ -1,10 +1,10 @@
 package assignment02.executor;
 
 import assignment02.SourceAnalyzer;
-import assignment02.Statistic;
-import assignment02.lib.LiveReport;
-import assignment02.lib.LiveReportImpl;
-import assignment02.lib.ReportConfiguration;
+import assignment02.lib.report.LiveReport;
+import assignment02.lib.report.LiveReportImpl;
+import assignment02.lib.report.ReportConfiguration;
+import assignment02.lib.report.Statistic;
 
 import java.io.IOException;
 import java.nio.file.Files;
