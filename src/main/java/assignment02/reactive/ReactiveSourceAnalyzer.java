@@ -24,21 +24,18 @@ public class ReactiveSourceAnalyzer implements SourceAnalyzer {
     public ObservableAsyncReport analyzeSources(Path directory) {
         // file walk
         Observable<Path> source = Observable.create(emitter -> {
-            Files.walkFileTree(directory, new SimpleFileVisitor<>() {
-                @Override
-                public FileVisitResult visitFile(Path file, java.nio.file.attribute.BasicFileAttributes attrs) throws IOException {
-                    if (file.toString().endsWith(".java")) {
-                        System.out.println("Found file: " + file);
-                        emitter.onNext(file);
-                    }
-                    return FileVisitResult.CONTINUE;
-                }
-            });
+            Files.walk(directory)
+                    .filter(Files::isRegularFile)
+                    .filter(p -> p.toString().endsWith(".java"))
+                    .forEach(p -> {
+                        System.out.println("Found file: " + p);
+                        emitter.onNext(p);
+                    });
             emitter.onComplete();
         });
         Observable<Statistic> statsObservable = source.map(p -> {
             try {
-                System.out.println(p + " : " + Files.readAllLines(p).size());
+                System.out.println("Counting " + p + ": " + Files.readAllLines(p).size());
                 return new Statistic(p, Files.readAllLines(p).size());
             } catch (IOException e) {
                 e.printStackTrace();
