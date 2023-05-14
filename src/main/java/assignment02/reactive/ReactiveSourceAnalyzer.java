@@ -6,12 +6,11 @@ import assignment02.lib.report.ReportConfiguration;
 import assignment02.lib.report.Statistic;
 import assignment02.lib.report.live.LiveReport;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
 
 public class ReactiveSourceAnalyzer implements SourceAnalyzer {
     private final LiveReport liveReport = new LiveReport();
@@ -22,39 +21,51 @@ public class ReactiveSourceAnalyzer implements SourceAnalyzer {
 
     @Override
     public ObservableAsyncReport analyzeSources(Path directory) {
+
         // file walk
         Observable<Path> source = Observable.create(emitter -> {
-            Files.walk(directory)
-                    .filter(Files::isRegularFile)
-                    .filter(p -> p.toString().endsWith(".java"))
-                    .forEach(p -> {
-                        System.out.println("Found file: " + p);
-                        emitter.onNext(p);
-                    });
-            emitter.onComplete();
-        });
-        Observable<Statistic> statsObservable = source.map(p -> {
-            try {
-                System.out.println("Counting " + p + ": " + Files.readAllLines(p).size());
-                return new Statistic(p, Files.readAllLines(p).size());
+            log("Start file walk");
+            try (final var paths = Files.walk(directory)) {
+                paths.filter(Files::isRegularFile)
+                        .filter(path -> path.toString().endsWith(".java"))
+                        .forEach(e -> {
+                            log("Emitting " + e);
+                            emitter.onNext(e);
+                        });
             } catch (IOException e) {
                 e.printStackTrace();
-                return null;
             }
+            log("File walk completed");
+            emitter.onComplete();
         });
-        statsObservable.subscribe(
-                (s) -> {
-                    liveReport.addStatistic(s);
-                    System.out.println("Statistic added: " + s);
-                },
-                Throwable::printStackTrace,
-                () -> {
-                    liveReport.complete();
-                    System.out.println("Finish, LiveReport completed");
-                }
-        );
+
+        Observable<Statistic> statsObservable = source
+                .subscribeOn(Schedulers.io())
+                .map(p -> {
+                    final var lines = Files.readAllLines(p);
+                    log("Creating statistic for " + p);
+                    return new Statistic(p, lines.size());
+                });
+
+        statsObservable
+                .observeOn(Schedulers.computation())
+                .subscribe(
+                        (s) -> {
+                            liveReport.addStatistic(s);
+                            log("Statistic added: " + s);
+                        },
+                        Throwable::printStackTrace,
+                        () -> {
+                            log("Finish, LiveReport completed");
+                            liveReport.complete();
+                        }
+                );
 
         return liveReport;
 
+    }
+
+    private void log(String msg) {
+        System.out.println(Thread.currentThread().getName() + ": " + msg);
     }
 }
