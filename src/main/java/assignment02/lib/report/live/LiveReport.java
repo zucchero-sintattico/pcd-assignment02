@@ -81,7 +81,7 @@ public class LiveReport extends Monitor implements ReportAsyncBuilder, Observabl
 
     @Override
     public void registerOnNumberOfFilesChanges(NumberOfFilesChangeListener listener) {
-        this.numberOfFilesChangeListeners.add(listener);
+        this.monitored(() -> this.numberOfFilesChangeListeners.add(listener));
     }
 
     protected void notifyNumberOfFilesChanged(final int newNumber) {
@@ -90,7 +90,7 @@ public class LiveReport extends Monitor implements ReportAsyncBuilder, Observabl
 
     @Override
     public void registerOnTopNChange(TopNChangeListener listener) {
-        this.topNChangeListeners.add(listener);
+        this.monitored(() -> this.topNChangeListeners.add(listener));
     }
 
     protected void notifyTopNChange(final List<Statistic> newTop) {
@@ -99,7 +99,7 @@ public class LiveReport extends Monitor implements ReportAsyncBuilder, Observabl
 
     @Override
     public void registerOnDistributionChange(DistributionChangeListener listener) {
-        this.distributionChangeListeners.add(listener);
+        this.monitored(() -> this.distributionChangeListeners.add(listener));
     }
 
     protected void notifyDistributionChange(final Map<Range, Integer> newDistribution) {
