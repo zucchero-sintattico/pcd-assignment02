@@ -5,10 +5,11 @@ import assignment02.lib.report.Report;
 
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 public interface SourceAnalyzer {
 
-    default CompletableFuture<Report> getReport(final Path directory) {
+    default Future<Report> getReport(final Path directory) {
         return this.analyzeSources(directory).getReport();
     }
 

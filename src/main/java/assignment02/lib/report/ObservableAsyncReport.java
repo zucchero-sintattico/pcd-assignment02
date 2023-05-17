@@ -2,13 +2,13 @@ package assignment02.lib.report;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
 
 public interface ObservableAsyncReport {
-    
-    CompletableFuture<Report> getReport();
+
+    Future<Report> getReport();
 
     void registerOnNumberOfFilesChanges(final NumberOfFilesChangeListener listener);
 
