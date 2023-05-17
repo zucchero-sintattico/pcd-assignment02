@@ -17,7 +17,7 @@ public class ControllerImpl implements Controller {
     private View view;
     private SourceAnalyzer analyzer;
     private ReportConfiguration reportConfiguration;
-    private LiveReport model;
+    private final LiveReport model;
 
 
     public ControllerImpl(LiveReport model) {
@@ -37,6 +37,7 @@ public class ControllerImpl implements Controller {
         this.reportConfiguration = new ReportConfiguration(topN, nOfIntervals, maxL);
         this.setAnalyzer(analyzerType);
         this.model.setReportConfiguration(this.reportConfiguration);
+        // todo???
     }
 
     private void setAnalyzer(AnalyzerType analyzerType) {

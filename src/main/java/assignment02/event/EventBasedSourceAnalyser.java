@@ -1,6 +1,10 @@
 package assignment02.event;
 
 import assignment02.SourceAnalyzer;
+import assignment02.event.verticles.PathConsumerVerticle;
+import assignment02.event.verticles.PathProducerVerticle;
+import assignment02.event.verticles.StatisticConsumerVerticle;
+import assignment02.event.verticles.VertxCloserVerticle;
 import assignment02.lib.report.ObservableAsyncReport;
 import assignment02.lib.report.ReportConfiguration;
 import assignment02.lib.report.live.ExecutorBasedLiveReport;

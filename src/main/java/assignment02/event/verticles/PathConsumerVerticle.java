@@ -1,4 +1,4 @@
-package assignment02.event;
+package assignment02.event.verticles;
 
 import assignment02.lib.report.Statistic;
 import io.vertx.core.AbstractVerticle;
