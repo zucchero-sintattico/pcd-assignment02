@@ -1,16 +1,17 @@
 package assignment02.mvc;
 
-import assignment.mvc.controller.Controller;
-import assignment.mvc.controller.ControllerImpl;
-import assignment.mvc.model.Model;
-import assignment.mvc.model.ModelImpl;
-import assignment.mvc.view.View;
-import assignment.mvc.view.ViewImpl;
+
+import assignment02.lib.report.live.ExecutorBasedLiveReport;
+import assignment02.lib.report.live.LiveReport;
+import assignment02.mvc.controller.Controller;
+import assignment02.mvc.controller.ControllerImpl;
+import assignment02.mvc.view.View;
+import assignment02.mvc.view.ViewImpl;
 
 public class MainGUI {
     static public void main(String[] args) {
 
-        final Model model = new ModelImpl();
+        final LiveReport model = new ExecutorBasedLiveReport();
         final Controller controller = new ControllerImpl(model);
         final View view = new ViewImpl();
 
