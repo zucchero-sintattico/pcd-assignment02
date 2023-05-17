@@ -1,0 +1,6 @@
+package assignment02.mvc.model.listeners;
+
+import assignment02.lib.architecture.Consumer;
+
+public interface NumberOfFilesChangeListener extends Consumer<Integer> {
+}

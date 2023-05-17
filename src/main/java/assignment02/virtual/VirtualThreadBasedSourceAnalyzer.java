@@ -5,8 +5,8 @@ import assignment02.lib.report.ReportConfiguration;
 
 import java.util.concurrent.Executors;
 
-public class VirtualThreadBasedSourceAnalyser extends TaskBasedSourceAnalyzer {
-    public VirtualThreadBasedSourceAnalyser(final ReportConfiguration configuration) {
+public class VirtualThreadBasedSourceAnalyzer extends TaskBasedSourceAnalyzer {
+    public VirtualThreadBasedSourceAnalyzer(final ReportConfiguration configuration) {
         super(configuration, Executors.newVirtualThreadPerTaskExecutor());
     }
 }
