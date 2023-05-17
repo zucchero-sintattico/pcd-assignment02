@@ -4,6 +4,7 @@ import assignment02.SourceAnalyzer;
 import assignment02.lib.report.ObservableAsyncReport;
 import assignment02.lib.report.ReportConfiguration;
 import assignment02.lib.report.Statistic;
+import assignment02.lib.report.live.ExecutorBasedLiveReport;
 import assignment02.lib.report.live.LiveReport;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class TaskBasedSourceAnalyzer implements SourceAnalyzer {
 
     private final ReportConfiguration configuration;
-    private final LiveReport liveReport = new LiveReport();
+    private final LiveReport liveReport = new ExecutorBasedLiveReport();
     private final ExecutorService pathProducerExecutor = Executors.newSingleThreadExecutor();
     private final ExecutorService pathConsumerExecutor;
 

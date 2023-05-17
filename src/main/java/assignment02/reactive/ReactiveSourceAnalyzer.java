@@ -4,6 +4,7 @@ import assignment02.SourceAnalyzer;
 import assignment02.lib.report.ObservableAsyncReport;
 import assignment02.lib.report.ReportConfiguration;
 import assignment02.lib.report.Statistic;
+import assignment02.lib.report.live.ExecutorBasedLiveReport;
 import assignment02.lib.report.live.LiveReport;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -13,7 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class ReactiveSourceAnalyzer implements SourceAnalyzer {
-    private final LiveReport liveReport = new LiveReport();
+    private final LiveReport liveReport = new ExecutorBasedLiveReport();
 
     public ReactiveSourceAnalyzer(ReportConfiguration configuration) {
         this.liveReport.setReportConfiguration(configuration);

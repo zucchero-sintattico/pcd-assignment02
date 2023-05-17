@@ -51,10 +51,12 @@ public class LiveReport extends Monitor implements ReportAsyncBuilder, Observabl
             // update top
             if (this.topStatistics.size() < this.configuration.n) {
                 this.insertTopSorted(statistic);
+                this.notifyTopNChange(this.topStatistics);
             } else {
                 if (this.topStatistics.get(this.configuration.n - 1).linesCount < statistic.linesCount) {
                     this.topStatistics.remove(this.configuration.n - 1);
                     this.insertTopSorted(statistic);
+                    this.notifyTopNChange(this.topStatistics);
                 }
             }
 
@@ -63,9 +65,12 @@ public class LiveReport extends Monitor implements ReportAsyncBuilder, Observabl
             for (Range range : this.distribution.keySet()) {
                 if (range.getStart() <= linesCount && linesCount < range.getEnd()) {
                     this.distribution.put(range, this.distribution.get(range) + 1);
+                    this.notifyDistributionChange(this.distribution);
                     break;
                 }
             }
+            
+            this.notifyNumberOfFilesChanged(this.statistics.size());
         });
     }
 
@@ -100,6 +105,11 @@ public class LiveReport extends Monitor implements ReportAsyncBuilder, Observabl
     @Override
     public void registerOnDistributionChange(DistributionChangeListener listener) {
         this.monitored(() -> this.distributionChangeListeners.add(listener));
+    }
+
+    @Override
+    public void stop() {
+        throw new RuntimeException("Not implemented");
     }
 
     protected void notifyDistributionChange(final Map<Range, Integer> newDistribution) {
