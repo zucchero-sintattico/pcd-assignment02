@@ -28,6 +28,10 @@ public class ControllerImpl implements Controller {
         this.reportConfiguration = new ReportConfiguration(topN, nOfIntervals, maxL);
         this.setAnalyzer(analyzerType);
         this.model = this.analyzer.analyzeSources(path);
+        this.registerModelListeners();
+    }
+
+    private void registerModelListeners() {
         this.model.registerOnNumberOfFilesChanges(this.view::updateNumberOfFiles);
         this.model.registerOnTopNChange(this.view::updateTopN);
         this.model.registerOnDistributionChange(this.view::updateDistribution);

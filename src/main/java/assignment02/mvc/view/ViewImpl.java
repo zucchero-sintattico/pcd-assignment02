@@ -15,6 +15,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.nio.file.Path;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -31,6 +32,8 @@ public class ViewImpl extends JFrame implements View {
     private Path selectedPath;
     private AlgorithmStatus status = AlgorithmStatus.STOPPED;
 
+    private AnalyzerType analyzerType;
+
     public ViewImpl() {
         super("My View");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -39,7 +42,7 @@ public class ViewImpl extends JFrame implements View {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         final JPanel preferencesPanel = new JPanel();
-        preferencesPanel.setLayout(new GridLayout(4, 2));
+        preferencesPanel.setLayout(new GridLayout(5, 2));
 
         final JLabel filePathLabel = new JLabel("File path:");
         final JButton filePathButton = new JButton("Browse");
@@ -61,14 +64,32 @@ public class ViewImpl extends JFrame implements View {
         final JLabel topNLabel = new JLabel("Top N files number:");
         final JTextField topNText = new JTextField("10");
 
+        final JLabel ImplementationLabel = new JLabel("Implementation:");
+        List<String> choices = Arrays.stream(AnalyzerType.values())
+                .map(Enum::toString)
+                .map(String::toLowerCase)
+                .toList();
+        JComboBox<String> ImplementationBox = new JComboBox<>(choices.toArray(new String[0]));
+        ImplementationBox.addActionListener(e -> {
+            JComboBox cb = (JComboBox) e.getSource();
+            AnalyzerType choice = AnalyzerType.valueOf(cb.getSelectedItem().toString().toUpperCase());
+            analyzerType = choice;
+            System.out.println(choice);
+        });
+
+
         preferencesPanel.add(filePathLabel);
         preferencesPanel.add(filePathButton);
         preferencesPanel.add(nOfRangesLabel);
         preferencesPanel.add(nOfRangesText);
         preferencesPanel.add(maxLinesLabel);
         preferencesPanel.add(maxLinesText);
+
         preferencesPanel.add(topNLabel);
         preferencesPanel.add(topNText);
+        preferencesPanel.add(ImplementationLabel);
+        preferencesPanel.add(ImplementationBox);
+
 
         final JPanel resultsPanel = new JPanel();
         resultsPanel.setLayout(new GridLayout(0, 2)); // x righe e 2 colonne
