@@ -40,21 +40,14 @@ public class Test {
     }
 
     long RunExecutorBasedSourceAnalyzer() {
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        final PrintStream ps = new PrintStream(outputStream);
+        final PrintStream old = System.out;
+        System.setOut(ps);
         final ReportConfiguration configuration = new ReportConfiguration(3, 10, 20);
         final SourceAnalyzer sourceAnalyser = new TaskBasedSourceAnalyzer(configuration);
         final Future<Report> report = sourceAnalyser.getReport(Path.of("src"));
         long tic = System.currentTimeMillis();
-        PrintStream old = System.out;
-
-        /////////////////////////////////////////////////////
-        System.setOut(new PrintStream(new OutputStream() {
-            @Override
-            public void write(int b) {
-                //DO NOTHING
-            }
-        }));
-        ///////////////////////////////////////////////////
-
         try {
 
             report.get();
@@ -62,6 +55,8 @@ public class Test {
             e.printStackTrace();
         }
         long toc = System.currentTimeMillis();
+        System.out.flush();
+        System.setOut(old);
         return toc - tic;
     }
 
