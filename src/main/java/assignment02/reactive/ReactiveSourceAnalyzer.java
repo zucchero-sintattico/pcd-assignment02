@@ -64,8 +64,6 @@ public class ReactiveSourceAnalyzer implements SourceAnalyzer {
                 .doOnComplete(liveReport::complete)
                 .subscribe();
 
-        this.stop();
-
         return liveReport;
 
     }
