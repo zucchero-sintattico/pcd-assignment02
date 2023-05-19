@@ -32,8 +32,7 @@ public class EventBasedSourceAnalyser implements SourceAnalyzer {
 
     @Override
     public void stop() {
-        liveReport.complete();
-        vertx.close();
+        vertx.close(e -> liveReport.complete());
     }
 
 
