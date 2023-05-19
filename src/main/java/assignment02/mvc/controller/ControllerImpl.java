@@ -31,6 +31,18 @@ public class ControllerImpl implements Controller {
         this.reportConfiguration = new ReportConfiguration(topN, nOfIntervals, maxL);
         this.setAnalyzer(analyzerType);
         this.model = this.analyzer.analyzeSources(path);
+        this.registerModelListeners();
+        this.algorithmStatus = AlgorithmStatus.RUNNING;
+        this.view.updateAlgorithmStatus(this.algorithmStatus);
+        this.observeAsyncCompletion();
+    }
+
+    /**
+     * This method is used to observe the completion of the asynchronous computation.
+     * It is implemented using a new thread that waits for the completion of the computation.
+     * When the computation is completed, the algorithm status is updated.
+     */
+    private void observeAsyncCompletion() {
         new Thread(() -> {
             try {
                 this.model.getReport().get();
@@ -42,8 +54,6 @@ public class ControllerImpl implements Controller {
                 throw new RuntimeException(e);
             }
         }).start();
-        this.algorithmStatus = AlgorithmStatus.RUNNING;
-        this.view.updateAlgorithmStatus(this.algorithmStatus);
     }
 
     private void registerModelListeners() {
