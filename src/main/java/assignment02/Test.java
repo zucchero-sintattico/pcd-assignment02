@@ -49,7 +49,6 @@ public class Test {
         final Future<Report> report = sourceAnalyser.getReport(Path.of("src"));
         long tic = System.currentTimeMillis();
         try {
-
             report.get();
         } catch (Exception e) {
             e.printStackTrace();
