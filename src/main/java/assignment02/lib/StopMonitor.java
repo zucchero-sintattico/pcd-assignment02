@@ -8,13 +8,11 @@ public class StopMonitor extends Monitor {
     }
 
     public void stop() {
-        monitored(() -> {
-            this.toBeStopped = true;
-        });
+        monitored(() -> toBeStopped = true);
     }
 
     public boolean hasToBeStopped() {
-        return monitored(() -> this.toBeStopped);
+        return monitored(this::hasToBeStopped);
     }
 
 }
