@@ -22,7 +22,7 @@ public class StatisticConsumerVerticle extends AbstractVerticle {
             final Statistic statistic = Statistic.fromString(message.body().toString());
             liveReport.addStatistic(statistic);
         });
-        vertx.eventBus().consumer("newStatistic.completed", message -> {
+        vertx.eventBus().consumer("statisticsGeneration.completed", message -> {
             log("StatisticConsumerVerticle received newStatistic.completed message");
             liveReport.complete();
             log("StatisticConsumerVerticle sending completed message");
