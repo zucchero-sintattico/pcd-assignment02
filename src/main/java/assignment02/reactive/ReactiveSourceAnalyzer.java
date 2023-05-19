@@ -1,6 +1,7 @@
 package assignment02.reactive;
 
 import assignment02.SourceAnalyzer;
+import assignment02.lib.StopMonitor;
 import assignment02.lib.report.ObservableAsyncReport;
 import assignment02.lib.report.ReportConfiguration;
 import assignment02.lib.report.Statistic;
@@ -14,7 +15,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class ReactiveSourceAnalyzer implements SourceAnalyzer {
+
     private final LiveReport liveReport = new ExecutorBasedLiveReport();
+    private final StopMonitor stopMonitor = new StopMonitor();
+    private Observable<Path> source = null;
 
     public ReactiveSourceAnalyzer(ReportConfiguration configuration) {
         this.liveReport.setReportConfiguration(configuration);
@@ -24,24 +28,29 @@ public class ReactiveSourceAnalyzer implements SourceAnalyzer {
     public ObservableAsyncReport analyzeSources(Path directory) {
 
         // file walk
-        Observable<Path> source = Observable.create(emitter -> {
+        this.source = Observable.create(emitter -> {
             log("Start file walk");
             try (final var paths = Files.walk(directory)) {
                 paths.filter(Files::isRegularFile)
                         .filter(path -> path.toString().endsWith(".java"))
                         .forEach(e -> {
+                            if (this.stopMonitor.hasToBeStopped()) {
+                                throw new RuntimeException("Stopped");
+                            }
                             log("Emitting " + e);
                             emitter.onNext(e);
 
                         });
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (RuntimeException e) {
+                log("Stopped");
             }
             log("File walk completed");
             emitter.onComplete();
         });
 
-        Observable<Statistic> statsObservable = source
+        Observable<Statistic> statsObservable = this.source
                 .subscribeOn(Schedulers.io())
                 .map(p -> {
                     final var lines = Files.readAllLines(p);
@@ -55,13 +64,15 @@ public class ReactiveSourceAnalyzer implements SourceAnalyzer {
                 .doOnComplete(liveReport::complete)
                 .subscribe();
 
+        this.stop();
+
         return liveReport;
 
     }
 
     @Override
     public void stop() {
-        throw new RuntimeException();
+        this.stopMonitor.stop();
     }
 
     private void log(String msg) {

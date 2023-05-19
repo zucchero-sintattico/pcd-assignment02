@@ -4,6 +4,7 @@ import assignment02.lib.report.ObservableAsyncReport;
 import assignment02.lib.report.Report;
 
 import java.nio.file.Path;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 public interface SourceAnalyzer {
