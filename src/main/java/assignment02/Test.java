@@ -12,14 +12,13 @@ import java.util.concurrent.Future;
 
 public class Test {
     public static void main(String[] args) {
-        Test test = new Test();
-        long time = test.RunEventBasedSourceAnalyser();
-        System.out.println("EventBasedSourceAnalyser: " + time + "ms");
-        time = test.RunExecutorBasedSourceAnalyzer();
-        System.out.println("ExecutorBasedSourceAnalyzer: " + time + "ms");
+        long eventTime = runEventBasedSourceAnalyser();
+        System.out.println("EventBasedSourceAnalyser: " + eventTime + "ms");
+        long executorTime = runExecutorBasedSourceAnalyzer();
+        System.out.println("ExecutorBasedSourceAnalyzer: " + executorTime + "ms");
     }
 
-    long RunEventBasedSourceAnalyser() {
+    private static long runEventBasedSourceAnalyser() {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         final PrintStream ps = new PrintStream(outputStream);
         final PrintStream old = System.out;
@@ -39,7 +38,7 @@ public class Test {
         return toc - tic;
     }
 
-    long RunExecutorBasedSourceAnalyzer() {
+    private static long runExecutorBasedSourceAnalyzer() {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         final PrintStream ps = new PrintStream(outputStream);
         final PrintStream old = System.out;
