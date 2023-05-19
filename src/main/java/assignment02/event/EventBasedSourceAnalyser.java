@@ -15,6 +15,7 @@ import java.nio.file.Path;
 
 public class EventBasedSourceAnalyser implements SourceAnalyzer {
     private final LiveReport liveReport = new ExecutorBasedLiveReport();
+    private final Vertx vertx = Vertx.vertx();
 
     public EventBasedSourceAnalyser(final ReportConfiguration configuration) {
         this.liveReport.setReportConfiguration(configuration);
@@ -22,7 +23,6 @@ public class EventBasedSourceAnalyser implements SourceAnalyzer {
 
     @Override
     public ObservableAsyncReport analyzeSources(final Path directory) {
-        final Vertx vertx = Vertx.vertx();
         vertx.deployVerticle(new VertxCloserVerticle());
         vertx.deployVerticle(new StatisticConsumerVerticle(liveReport));
         vertx.deployVerticle(new PathConsumerVerticle());
@@ -32,7 +32,8 @@ public class EventBasedSourceAnalyser implements SourceAnalyzer {
 
     @Override
     public void stop() {
-        throw new RuntimeException();
+        liveReport.complete();
+        vertx.close();
     }
 
 
