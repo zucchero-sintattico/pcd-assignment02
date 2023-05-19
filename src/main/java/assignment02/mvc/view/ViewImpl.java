@@ -26,10 +26,16 @@ public class ViewImpl extends JFrame implements View {
     private final JLabel statusLabel = new JLabel("Status: Stopped");
     private final JList<String> topNList = new JList<>();
     private final JList<String> distributionList = new JList<>();
+    private final JTextField maxLinesText = new JTextField("100");
+    private final JTextField topNText = new JTextField("10");
+    private final JTextField nOfRangesText = new JTextField("5");
+    // panels
+    private final JPanel preferencesPanel = new JPanel();
+    private final JPanel resultsPanel = new JPanel();
+    private final JPanel statusPanel = new JPanel();
     private Controller controller;
     private Path selectedPath;
     private AlgorithmStatus status = AlgorithmStatus.IDLE;
-
     private AnalyzerType analyzerType = AnalyzerType.TASK;
 
     public ViewImpl() {
@@ -38,79 +44,35 @@ public class ViewImpl extends JFrame implements View {
         setSize(1000, 600);
         setLocationRelativeTo(null);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        setPreferencesPanel();
+        setResultsPanel();
+        setStatusPanel();
+        // aggiungo i panel al frame
+        add(preferencesPanel, BorderLayout.NORTH);
+        add(resultsPanel, BorderLayout.CENTER);
+        add(statusPanel, BorderLayout.SOUTH);
+        pack(); // adatto la dimensione del frame ai componenti
+        add(preferencesPanel);
+        add(resultsPanel);
+        add(statusPanel);
 
-        final JPanel preferencesPanel = new JPanel();
-        preferencesPanel.setLayout(new GridLayout(5, 2));
-
-        final JLabel filePathLabel = new JLabel("File path:");
-        final JButton filePathButton = new JButton("Browse");
-        filePathButton.addActionListener(e -> {
-            final JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            UIManager.put("FileChooser.readOnly", Boolean.TRUE);
-            fileChooser.showOpenDialog(this);
-            selectedPath = fileChooser.getSelectedFile().toPath();
-            filePathLabel.setText("File path: " + selectedPath);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent ev) {
+                System.exit(0);
+            }
         });
+    }
 
-        final JLabel nOfRangesLabel = new JLabel("Number of ranges:");
-        final JTextField nOfRangesText = new JTextField("5");
-
-        final JLabel maxLinesLabel = new JLabel("Max number of lines:");
-        final JTextField maxLinesText = new JTextField("100");
-
-        final JLabel topNLabel = new JLabel("Top N files number:");
-        final JTextField topNText = new JTextField("10");
-
-        final JLabel ImplementationLabel = new JLabel("Implementation:");
-        List<String> choices = Arrays.stream(AnalyzerType.values())
-                .map(Enum::toString)
-                .map(String::toLowerCase)
-                .toList();
-        JComboBox<String> ImplementationBox = new JComboBox<>(choices.toArray(new String[0]));
-        ImplementationBox.addActionListener(e -> {
-            JComboBox<String> cb = (JComboBox<String>) e.getSource();
-            AnalyzerType choice = AnalyzerType.valueOf(cb.getSelectedItem().toString().toUpperCase());
-            analyzerType = choice;
-            System.out.println(choice);
-        });
-
-
-        preferencesPanel.add(filePathLabel);
-        preferencesPanel.add(filePathButton);
-        preferencesPanel.add(nOfRangesLabel);
-        preferencesPanel.add(nOfRangesText);
-        preferencesPanel.add(maxLinesLabel);
-        preferencesPanel.add(maxLinesText);
-
-        preferencesPanel.add(topNLabel);
-        preferencesPanel.add(topNText);
-        preferencesPanel.add(ImplementationLabel);
-        preferencesPanel.add(ImplementationBox);
-
-
-        final JPanel resultsPanel = new JPanel();
-        resultsPanel.setLayout(new GridLayout(0, 2)); // x righe e 2 colonne
-        resultsPanel.setBorder(new TitledBorder("Results Panel"));
-        resultsPanel.setPreferredSize(new Dimension(400, 100));
-        resultsPanel.add(topNList);
-        resultsPanel.add(distributionList);
-
-
-        final JPanel statusPanel = new JPanel();
+    private void setStatusPanel() {
         statusPanel.setPreferredSize(new Dimension(400, 100));
         statusPanel.setLayout(new FlowLayout(FlowLayout.RIGHT)); // allineo i componenti a destra
         statusPanel.setBorder(new TitledBorder("Status Panel"));
-
-
         // creo il riquadro status
         statusLabel.setOpaque(true); // rendo opaco il label per mostrare il colore di sfondo
         this.updateAlgorithmStatus(AlgorithmStatus.IDLE);
-
         // creo i bottoni start e stop
         final JButton startButton = new JButton("Start");
         final JButton stopButton = new JButton("Stop");
-
         final Supplier<Boolean> canStart = () -> this.selectedPath != null &&
                 !maxLinesText.getText().equals("") &&
                 !nOfRangesText.getText().equals("") &&
@@ -144,22 +106,54 @@ public class ViewImpl extends JFrame implements View {
         statusPanel.add(statusLabel);
         statusPanel.add(startButton);
         statusPanel.add(stopButton);
+    }
 
-        // aggiungo i panel al frame
-        add(preferencesPanel, BorderLayout.NORTH);
-        add(resultsPanel, BorderLayout.CENTER);
-        add(statusPanel, BorderLayout.SOUTH);
+    private void setResultsPanel() {
+        resultsPanel.setLayout(new GridLayout(0, 2)); // x righe e 2 colonne
+        resultsPanel.setBorder(new TitledBorder("Results Panel"));
+        resultsPanel.setPreferredSize(new Dimension(400, 100));
+        resultsPanel.add(topNList);
+        resultsPanel.add(distributionList);
+    }
 
-        pack(); // adatto la dimensione del frame ai componenti
-        add(preferencesPanel);
-        add(resultsPanel);
-        add(statusPanel);
-
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent ev) {
-                System.exit(0);
-            }
+    private void setPreferencesPanel() {
+        preferencesPanel.setLayout(new GridLayout(5, 2));
+        final JLabel nOfRangesLabel = new JLabel("Number of ranges:");
+        final JLabel maxLinesLabel = new JLabel("Max number of lines:");
+        final JLabel topNLabel = new JLabel("Top N files number:");
+        final JLabel ImplementationLabel = new JLabel("Implementation:");
+        final JLabel filePathLabel = new JLabel("File path:");
+        final JButton filePathButton = new JButton("Browse");
+        filePathButton.addActionListener(e -> {
+            final JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            UIManager.put("FileChooser.readOnly", Boolean.TRUE);
+            fileChooser.showOpenDialog(this);
+            selectedPath = fileChooser.getSelectedFile().toPath();
+            filePathLabel.setText("File path: " + selectedPath);
         });
+        List<String> choices = Arrays.stream(AnalyzerType.values())
+                .map(Enum::toString)
+                .map(String::toLowerCase)
+                .toList();
+        JComboBox<String> ImplementationBox = new JComboBox<>(choices.toArray(new String[0]));
+        ImplementationBox.addActionListener(e -> {
+            JComboBox cb = (JComboBox) e.getSource();
+            AnalyzerType choice = AnalyzerType.valueOf(cb.getSelectedItem().toString().toUpperCase());
+            analyzerType = choice;
+            System.out.println(choice);
+        });
+
+        preferencesPanel.add(filePathLabel);
+        preferencesPanel.add(filePathButton);
+        preferencesPanel.add(nOfRangesLabel);
+        preferencesPanel.add(nOfRangesText);
+        preferencesPanel.add(maxLinesLabel);
+        preferencesPanel.add(maxLinesText);
+        preferencesPanel.add(topNLabel);
+        preferencesPanel.add(topNText);
+        preferencesPanel.add(ImplementationLabel);
+        preferencesPanel.add(ImplementationBox);
     }
 
     @Override
@@ -173,6 +167,7 @@ public class ViewImpl extends JFrame implements View {
         this.status = status;
         SwingUtilities.invokeLater(() -> {
             switch (this.status) {
+
                 case IDLE -> {
                     statusLabel.setText("Status: Idle");
                     statusLabel.setBackground(Color.LIGHT_GRAY);
