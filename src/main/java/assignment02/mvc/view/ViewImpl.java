@@ -30,7 +30,7 @@ public class ViewImpl extends JFrame implements View {
     private final JList<String> distributionList = new JList<>();
     private Controller controller;
     private Path selectedPath;
-    private AlgorithmStatus status = AlgorithmStatus.STOPPED;
+    private AlgorithmStatus status = AlgorithmStatus.IDLE;
 
     private AnalyzerType analyzerType = AnalyzerType.TASK;
 

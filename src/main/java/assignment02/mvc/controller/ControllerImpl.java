@@ -32,6 +32,7 @@ public class ControllerImpl implements Controller {
         this.model = this.analyzer.analyzeSources(path);
         this.registerModelListeners();
         this.algorithmStatus = AlgorithmStatus.RUNNING;
+        this.view.updateAlgorithmStatus(this.algorithmStatus);
     }
 
     private void registerModelListeners() {
@@ -53,6 +54,7 @@ public class ControllerImpl implements Controller {
     public void stopAlgorithm() {
         if (this.algorithmStatus == AlgorithmStatus.RUNNING) {
             this.algorithmStatus = AlgorithmStatus.STOPPED;
+            this.view.updateAlgorithmStatus(this.algorithmStatus);
             this.analyzer.stop();
         }
     }
