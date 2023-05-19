@@ -16,9 +16,16 @@ import java.util.concurrent.Future;
 
 public class Test {
     public static void main(String[] args) {
-        //long eventTime = runEventBasedSourceAnalyser();
-        //System.out.println("EventBasedSourceAnalyser: " + eventTime + "ms");
-        oneStepPerSourceAnalyser("/home/nico/Documenti", 10);
+        List<Integer> nFiles = List.of(33, 100,1000, 10000, 30000);
+        System.out.println("Event - Task - Reactive - Virtual");
+        nFiles.forEach( n -> {
+            try {
+                oneStepPerSourceAnalyser(n, 5);
+            }
+            catch (Exception e) {
+            }
+
+        });
     }
 
 
@@ -35,33 +42,28 @@ public class Test {
         System.setOut(old);
     }
 
-    private static long oneStepPerSourceAnalyser(String path, int nMeasures) {
+    private static long oneStepPerSourceAnalyser(int path, int nMeasures) {
 
         final ReportConfiguration configuration = new ReportConfiguration(3, 10, 20);
         long partialResult;
-        
+
         List<SourceAnalyzer> sourceAnalyzers = List.of(new EventBasedSourceAnalyser(configuration),
                 new TaskBasedSourceAnalyzer(configuration),
                 new ReactiveSourceAnalyzer(configuration),
                 new VirtualThreadBasedSourceAnalyzer(configuration));
         List<Integer> results = new ArrayList<>();
         for (SourceAnalyzer sourceAnalyser : sourceAnalyzers) {
-            System.out.println("SourceAnalyser: " + sourceAnalyser.getClass().getName());
-
             PrintStream old = switchOutputStream();
-            
-            Future<Report> report = sourceAnalyser.getReport(Path.of(path));
+            Future<Report> report = sourceAnalyser.getReport(Path.of("src/generator/"+(path)));
             partialResult = 0;
             for (int j = 1; j <= nMeasures; j++) {
 
                 long tic = System.currentTimeMillis();
-
                 try {
                     report.get();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
                 long toc = System.currentTimeMillis();
                 partialResult = (toc - tic) + partialResult;
 
@@ -70,9 +72,7 @@ public class Test {
             resetOuputStream(old);
 
         }
-
-        
-        System.out.println("Average time: " + results + "ms");
+        System.out.println("[ "+path+" ] - " + results);
     return 0;
     }
 }
