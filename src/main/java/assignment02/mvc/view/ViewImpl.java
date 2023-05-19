@@ -129,7 +129,7 @@ public class ViewImpl extends JFrame implements View {
                         parseInt(topNText.getText()),
                         parseInt(nOfRangesText.getText()),
                         parseInt(maxLinesText.getText()),
-                        AnalyzerType.EVENT)
+                        AnalyzerType.TASK)
                 ;
             }
         });

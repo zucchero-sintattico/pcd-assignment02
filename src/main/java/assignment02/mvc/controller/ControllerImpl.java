@@ -50,6 +50,7 @@ public class ControllerImpl implements Controller {
     public void stopAlgorithm() {
         if (this.model != null) {
             this.model.stop();
+            this.analyzer.stop();
         }
     }
 }
