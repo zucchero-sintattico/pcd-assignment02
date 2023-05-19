@@ -52,7 +52,8 @@ public class ReactiveSourceAnalyzer implements SourceAnalyzer {
         statsObservable
                 .observeOn(Schedulers.computation())
                 .doOnComplete(liveReport::complete)
-                .subscribe(liveReport::addStatistic);
+                .doOnNext(liveReport::addStatistic)
+                .subscribe();
 
         return liveReport;
 
