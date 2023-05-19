@@ -69,7 +69,7 @@ public class ViewImpl extends JFrame implements View {
                 .toList();
         JComboBox<String> ImplementationBox = new JComboBox<>(choices.toArray(new String[0]));
         ImplementationBox.addActionListener(e -> {
-            JComboBox cb = (JComboBox) e.getSource();
+            JComboBox<String> cb = (JComboBox<String>) e.getSource();
             AnalyzerType choice = AnalyzerType.valueOf(cb.getSelectedItem().toString().toUpperCase());
             analyzerType = choice;
             System.out.println(choice);
