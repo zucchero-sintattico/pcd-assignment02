@@ -6,6 +6,7 @@ import assignment02.event.EventBasedSourceAnalyser;
 import assignment02.executor.TaskBasedSourceAnalyzer;
 import assignment02.lib.report.ObservableAsyncReport;
 import assignment02.lib.report.ReportConfiguration;
+import assignment02.mvc.model.AlgorithmStatus;
 import assignment02.mvc.view.View;
 import assignment02.reactive.ReactiveSourceAnalyzer;
 import assignment02.virtual.VirtualThreadBasedSourceAnalyzer;
@@ -17,6 +18,7 @@ public class ControllerImpl implements Controller {
     private View view;
     private SourceAnalyzer analyzer;
     private ReportConfiguration reportConfiguration;
+    private AlgorithmStatus algorithmStatus = AlgorithmStatus.IDLE;
 
     @Override
     public void setView(View view) {
@@ -29,6 +31,7 @@ public class ControllerImpl implements Controller {
         this.setAnalyzer(analyzerType);
         this.model = this.analyzer.analyzeSources(path);
         this.registerModelListeners();
+        this.algorithmStatus = AlgorithmStatus.RUNNING;
     }
 
     private void registerModelListeners() {
@@ -48,8 +51,9 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void stopAlgorithm() {
-        if (this.model != null) {
-            this.model.stop();
+        if (this.algorithmStatus == AlgorithmStatus.RUNNING) {
+            this.algorithmStatus = AlgorithmStatus.STOPPED;
+            this.analyzer.stop();
         }
     }
 }

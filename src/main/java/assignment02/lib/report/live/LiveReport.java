@@ -69,7 +69,7 @@ public class LiveReport extends Monitor implements ReportAsyncBuilder, Observabl
                     break;
                 }
             }
-            
+
             this.notifyNumberOfFilesChanged(this.statistics.size());
         });
     }
@@ -105,11 +105,6 @@ public class LiveReport extends Monitor implements ReportAsyncBuilder, Observabl
     @Override
     public void registerOnDistributionChange(DistributionChangeListener listener) {
         this.monitored(() -> this.distributionChangeListeners.add(listener));
-    }
-
-    @Override
-    public void stop() {
-        throw new RuntimeException("Not implemented");
     }
 
     protected void notifyDistributionChange(final Map<Range, Integer> newDistribution) {

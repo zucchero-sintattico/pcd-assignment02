@@ -63,6 +63,8 @@ public class TaskBasedSourceAnalyzer implements SourceAnalyzer {
 
     @Override
     public void stop() {
-        throw new RuntimeException();
+        this.pathProducerExecutor.shutdownNow();
+        this.pathConsumerExecutor.shutdownNow();
+        this.liveReport.complete();
     }
 }

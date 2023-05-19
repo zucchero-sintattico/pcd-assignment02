@@ -32,7 +32,7 @@ public class ViewImpl extends JFrame implements View {
     private Path selectedPath;
     private AlgorithmStatus status = AlgorithmStatus.STOPPED;
 
-    private AnalyzerType analyzerType;
+    private AnalyzerType analyzerType = AnalyzerType.TASK;
 
     public ViewImpl() {
         super("My View");
@@ -129,7 +129,7 @@ public class ViewImpl extends JFrame implements View {
                         parseInt(topNText.getText()),
                         parseInt(nOfRangesText.getText()),
                         parseInt(maxLinesText.getText()),
-                        AnalyzerType.EVENT)
+                        analyzerType)
                 ;
             }
         });

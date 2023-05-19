@@ -16,7 +16,6 @@ public interface ObservableAsyncReport {
 
     void registerOnDistributionChange(final DistributionChangeListener listener);
 
-    void stop();
 
     interface NumberOfFilesChangeListener extends Consumer<Integer> {
     }
