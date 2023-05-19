@@ -12,6 +12,7 @@ import assignment02.reactive.ReactiveSourceAnalyzer;
 import assignment02.virtual.VirtualThreadBasedSourceAnalyzer;
 
 import java.nio.file.Path;
+import java.util.concurrent.ExecutionException;
 
 public class ControllerImpl implements Controller {
     private ObservableAsyncReport model;
@@ -30,7 +31,14 @@ public class ControllerImpl implements Controller {
         this.reportConfiguration = new ReportConfiguration(topN, nOfIntervals, maxL);
         this.setAnalyzer(analyzerType);
         this.model = this.analyzer.analyzeSources(path);
-        this.registerModelListeners();
+        new Thread(() -> {
+            try {
+                this.model.getReport().get();
+                this.algorithmStatus = AlgorithmStatus.FINISHED;
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
         this.algorithmStatus = AlgorithmStatus.RUNNING;
         this.view.updateAlgorithmStatus(this.algorithmStatus);
     }
