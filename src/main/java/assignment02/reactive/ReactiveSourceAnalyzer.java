@@ -13,6 +13,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 public class ReactiveSourceAnalyzer implements SourceAnalyzer {
 
@@ -52,10 +53,14 @@ public class ReactiveSourceAnalyzer implements SourceAnalyzer {
 
         Observable<Statistic> statsObservable = this.source
                 .subscribeOn(Schedulers.io())
-                .map(p -> {
-                    final var lines = Files.readAllLines(p);
-                    log("Creating statistic for " + p);
-                    return new Statistic(p, lines.size());
+                .mapOptional(p -> {
+                    try {
+                        final var lines = Files.readAllLines(p);
+                        log("Creating statistic for " + p);
+                        return Optional.of(new Statistic(p, lines.size()));
+                    } catch (IOException ignored) {
+                        return Optional.empty();
+                    }
                 });
 
         statsObservable

@@ -33,8 +33,7 @@ public class TaskBasedSourceAnalyzer implements SourceAnalyzer {
     private void analyzeFileTask(final Path path) {
         try {
             this.liveReport.addStatistic(new Statistic(path, Files.readAllLines(path).size()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException ignored) {
         }
     }
 
