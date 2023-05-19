@@ -16,7 +16,7 @@ import java.util.concurrent.Future;
 
 public class Test {
     public static void main(String[] args) {
-        List<Integer> nFiles = List.of(33, 100,1000, 10000, 30000);
+        List<Integer> nFiles = List.of(100,1000, 10000, 30000);
         System.out.println("Event - Task - Reactive - Virtual");
         nFiles.forEach( n -> {
             try {
