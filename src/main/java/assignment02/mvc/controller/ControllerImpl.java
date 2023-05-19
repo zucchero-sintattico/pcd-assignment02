@@ -34,7 +34,10 @@ public class ControllerImpl implements Controller {
         new Thread(() -> {
             try {
                 this.model.getReport().get();
-                this.algorithmStatus = AlgorithmStatus.FINISHED;
+                if (this.algorithmStatus != AlgorithmStatus.STOPPED) {
+                    this.algorithmStatus = AlgorithmStatus.FINISHED;
+                    this.view.updateAlgorithmStatus(this.algorithmStatus);
+                }
             } catch (InterruptedException | ExecutionException e) {
                 throw new RuntimeException(e);
             }
