@@ -22,9 +22,6 @@ import static java.lang.Integer.parseInt;
 
 public class ViewImpl extends JFrame implements View {
 
-    private Controller controller;
-    private Path selectedPath;
-    private AlgorithmStatus status = AlgorithmStatus.IDLE;
     private final JLabel numberOfFilesLabel = new JLabel("Founded files: 0");
     private final JLabel statusLabel = new JLabel("Status: Stopped");
     private final JList<String> topNList = new JList<>();
@@ -36,6 +33,9 @@ public class ViewImpl extends JFrame implements View {
     private final JPanel preferencesPanel = new JPanel();
     private final JPanel resultsPanel = new JPanel();
     private final JPanel statusPanel = new JPanel();
+    private Controller controller;
+    private Path selectedPath;
+    private AlgorithmStatus status = AlgorithmStatus.IDLE;
     private AnalyzerType analyzerType = AnalyzerType.TASK;
 
     public ViewImpl() {
