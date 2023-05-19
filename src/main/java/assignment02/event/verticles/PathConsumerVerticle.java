@@ -29,11 +29,11 @@ public class PathConsumerVerticle extends AbstractVerticle {
             });
             filesReadFutures.add(fileReadFuture);
         });
-        vertx.eventBus().consumer("newPath.completed", message -> {
+        vertx.eventBus().consumer("pathSearch.completed", message -> {
             CompositeFuture.all(filesReadFutures).onSuccess(x -> {
                 log("PathConsumerVerticle completed, found " + count + " files");
                 log("PathConsumerVerticle sending newStatistic.completed message");
-                vertx.eventBus().send("newStatistic.completed", "completed");
+                vertx.eventBus().send("statisticsGeneration.completed", "completed");
             });
         });
     }

@@ -57,7 +57,7 @@ public class PathProducerVerticle extends AbstractVerticle {
         scanFolderRecursive(path).onSuccess(x -> {
             log("PathProducerVerticle completed, found " + count + " files");
             log("PathProducerVerticle sending newPath.completed message");
-            vertx.eventBus().send("newPath.completed", "completed");
+            vertx.eventBus().send("pathSearch.completed", "completed");
         });
     }
 
