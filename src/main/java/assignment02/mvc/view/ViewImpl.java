@@ -3,9 +3,9 @@ package assignment02.mvc.view;
 
 import assignment02.lib.report.Range;
 import assignment02.lib.report.Statistic;
+import assignment02.mvc.controller.AlgorithmStatus;
 import assignment02.mvc.controller.AnalyzerType;
 import assignment02.mvc.controller.Controller;
-import assignment02.mvc.model.AlgorithmStatus;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

@@ -5,7 +5,6 @@ import assignment02.event.EventBasedSourceAnalyser;
 import assignment02.executor.TaskBasedSourceAnalyzer;
 import assignment02.lib.report.ObservableAsyncReport;
 import assignment02.lib.report.ReportConfiguration;
-import assignment02.mvc.model.AlgorithmStatus;
 import assignment02.mvc.view.View;
 import assignment02.reactive.ReactiveSourceAnalyzer;
 import assignment02.virtual.VirtualThreadBasedSourceAnalyzer;
