@@ -29,7 +29,6 @@ public class ViewImpl extends JFrame implements View {
     private final JTextField maxLinesText = new JTextField("100");
     private final JTextField topNText = new JTextField("10");
     private final JTextField nOfRangesText = new JTextField("5");
-    // panels
     private final JPanel preferencesPanel = new JPanel();
     private final JPanel resultsPanel = new JPanel();
     private final JPanel statusPanel = new JPanel();
@@ -47,11 +46,11 @@ public class ViewImpl extends JFrame implements View {
         setPreferencesPanel();
         setResultsPanel();
         setStatusPanel();
-        // aggiungo i panel al frame
+        // adding the panels to the frame
         add(preferencesPanel, BorderLayout.NORTH);
         add(resultsPanel, BorderLayout.CENTER);
         add(statusPanel, BorderLayout.SOUTH);
-        pack(); // adatto la dimensione del frame ai componenti
+        pack(); // adapts the frame to the components
         add(preferencesPanel);
         add(resultsPanel);
         add(statusPanel);
@@ -65,12 +64,11 @@ public class ViewImpl extends JFrame implements View {
 
     private void setStatusPanel() {
         statusPanel.setPreferredSize(new Dimension(400, 100));
-        statusPanel.setLayout(new FlowLayout(FlowLayout.RIGHT)); // allineo i componenti a destra
+        statusPanel.setLayout(new FlowLayout(FlowLayout.RIGHT)); // align to the right
         statusPanel.setBorder(new TitledBorder("Status Panel"));
-        // creo il riquadro status
-        statusLabel.setOpaque(true); // rendo opaco il label per mostrare il colore di sfondo
+        statusLabel.setOpaque(true); // make it opaque to see the background color
         this.updateAlgorithmStatus(AlgorithmStatus.IDLE);
-        // creo i bottoni start e stop
+        // create start and stop buttons
         final JButton startButton = new JButton("Start");
         final JButton stopButton = new JButton("Stop");
         final Supplier<Boolean> canStart = () -> this.selectedPath != null &&
@@ -79,7 +77,7 @@ public class ViewImpl extends JFrame implements View {
                 !topNText.getText().equals("") &&
                 !status.equals(AlgorithmStatus.RUNNING);
 
-        // aggiungo un listener ai bottoni per cambiare il colore del riquadro status
+        // add listeners to buttons so that they can change color
         startButton.addActionListener(e -> {
             if (canStart.get()) {
                 numberOfFilesLabel.setText("Founded files: 0");
@@ -101,7 +99,7 @@ public class ViewImpl extends JFrame implements View {
             }
         });
 
-        // aggiungo i componenti al panel C
+        // add components to status panel
         statusPanel.add(numberOfFilesLabel);
         statusPanel.add(statusLabel);
         statusPanel.add(startButton);
@@ -109,7 +107,7 @@ public class ViewImpl extends JFrame implements View {
     }
 
     private void setResultsPanel() {
-        resultsPanel.setLayout(new GridLayout(0, 2)); // x righe e 2 colonne
+        resultsPanel.setLayout(new GridLayout(0, 2));
         resultsPanel.setBorder(new TitledBorder("Results Panel"));
         resultsPanel.setPreferredSize(new Dimension(400, 100));
         resultsPanel.add(topNList);
