@@ -3,8 +3,8 @@ package assignment02.mvc.view;
 
 import assignment02.lib.report.Range;
 import assignment02.lib.report.Statistic;
+import assignment02.mvc.controller.AlgorithmStatus;
 import assignment02.mvc.controller.Controller;
-import assignment02.mvc.model.AlgorithmStatus;
 
 import java.util.List;
 import java.util.Map;

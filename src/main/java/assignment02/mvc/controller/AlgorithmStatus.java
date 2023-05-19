@@ -1,4 +1,4 @@
-package assignment02.mvc.model;
+package assignment02.mvc.controller;
 
 public enum AlgorithmStatus {
     IDLE,
