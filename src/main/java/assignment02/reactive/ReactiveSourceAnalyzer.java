@@ -32,6 +32,7 @@ public class ReactiveSourceAnalyzer implements SourceAnalyzer {
                         .forEach(e -> {
                             log("Emitting " + e);
                             emitter.onNext(e);
+
                         });
             } catch (IOException e) {
                 e.printStackTrace();
@@ -50,17 +51,8 @@ public class ReactiveSourceAnalyzer implements SourceAnalyzer {
 
         statsObservable
                 .observeOn(Schedulers.computation())
-                .subscribe(
-                        (s) -> {
-                            liveReport.addStatistic(s);
-                            log("Statistic added: " + s);
-                        },
-                        Throwable::printStackTrace,
-                        () -> {
-                            log("Finish, LiveReport completed");
-                            liveReport.complete();
-                        }
-                );
+                .doOnComplete(liveReport::complete)
+                .subscribe(liveReport::addStatistic);
 
         return liveReport;
 
