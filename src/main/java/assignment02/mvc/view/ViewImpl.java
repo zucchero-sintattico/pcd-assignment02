@@ -24,13 +24,13 @@ import static java.lang.Integer.parseInt;
 
 public class ViewImpl extends JFrame implements View {
 
+    private Controller controller;
+    private Path selectedPath;
+    private AlgorithmStatus status = AlgorithmStatus.IDLE;
     private final JLabel numberOfFilesLabel = new JLabel("Founded files: 0");
     private final JLabel statusLabel = new JLabel("Status: Stopped");
     private final JList<String> topNList = new JList<>();
     private final JList<String> distributionList = new JList<>();
-    private Controller controller;
-    private Path selectedPath;
-    private AlgorithmStatus status = AlgorithmStatus.IDLE;
     private final JTextField maxLinesText = new JTextField("100");
     private final JTextField topNText = new JTextField("10");
     private final JTextField nOfRangesText = new JTextField("5");
@@ -65,7 +65,7 @@ public class ViewImpl extends JFrame implements View {
         });
     }
 
-    private JPanel setStatusPanel() {
+    private void setStatusPanel() {
         statusPanel.setPreferredSize(new Dimension(400, 100));
         statusPanel.setLayout(new FlowLayout(FlowLayout.RIGHT)); // allineo i componenti a destra
         statusPanel.setBorder(new TitledBorder("Status Panel"));
@@ -104,7 +104,6 @@ public class ViewImpl extends JFrame implements View {
         statusPanel.add(statusLabel);
         statusPanel.add(startButton);
         statusPanel.add(stopButton);
-        return statusPanel;
     }
 
     private void setResultsPanel() {
@@ -131,7 +130,6 @@ public class ViewImpl extends JFrame implements View {
             selectedPath = fileChooser.getSelectedFile().toPath();
             filePathLabel.setText("File path: " + selectedPath);
         });
-
         List<String> choices = Arrays.stream(AnalyzerType.values())
                 .map(Enum::toString)
                 .map(String::toLowerCase)
@@ -144,14 +142,12 @@ public class ViewImpl extends JFrame implements View {
             System.out.println(choice);
         });
 
-
         preferencesPanel.add(filePathLabel);
         preferencesPanel.add(filePathButton);
         preferencesPanel.add(nOfRangesLabel);
         preferencesPanel.add(nOfRangesText);
         preferencesPanel.add(maxLinesLabel);
         preferencesPanel.add(maxLinesText);
-
         preferencesPanel.add(topNLabel);
         preferencesPanel.add(topNText);
         preferencesPanel.add(ImplementationLabel);
@@ -168,22 +164,22 @@ public class ViewImpl extends JFrame implements View {
     public void updateAlgorithmStatus(final AlgorithmStatus status) {
         SwingUtilities.invokeLater(() -> {
             switch (status) {
-                case IDLE:
+                case IDLE -> {
                     statusLabel.setText("Status: Idle");
                     statusLabel.setBackground(Color.LIGHT_GRAY);
-                    break;
-                case RUNNING:
+                }
+                case RUNNING -> {
                     statusLabel.setText("Status: Running");
                     statusLabel.setBackground(Color.GREEN);
-                    break;
-                case STOPPED:
+                }
+                case STOPPED -> {
                     statusLabel.setText("Status: Stopped");
                     statusLabel.setBackground(Color.RED);
-                    break;
-                case FINISHED:
+                }
+                case FINISHED -> {
                     statusLabel.setText("Status: Finished");
                     statusLabel.setBackground(Color.ORANGE);
-                    break;
+                }
             }
         });
     }
