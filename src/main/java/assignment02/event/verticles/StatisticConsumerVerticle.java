@@ -24,7 +24,6 @@ public class StatisticConsumerVerticle extends AbstractVerticle {
         });
         vertx.eventBus().consumer("statisticsGeneration.completed", message -> {
             log("StatisticConsumerVerticle received newStatistic.completed message");
-            liveReport.complete();
             log("StatisticConsumerVerticle sending completed message");
             vertx.eventBus().send("completed", "completed");
         });

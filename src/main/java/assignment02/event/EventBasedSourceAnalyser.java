@@ -23,7 +23,7 @@ public class EventBasedSourceAnalyser implements SourceAnalyzer {
 
     @Override
     public ObservableAsyncReport analyzeSources(final Path directory) {
-        vertx.deployVerticle(new VertxCloserVerticle());
+        vertx.deployVerticle(new VertxCloserVerticle(liveReport));
         vertx.deployVerticle(new StatisticConsumerVerticle(liveReport));
         vertx.deployVerticle(new PathConsumerVerticle());
         vertx.deployVerticle(new PathProducerVerticle(directory.toString()));
