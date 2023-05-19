@@ -143,7 +143,6 @@ public class ViewImpl extends JFrame implements View {
             analyzerType = choice;
             System.out.println(choice);
         });
-
         preferencesPanel.add(filePathLabel);
         preferencesPanel.add(filePathButton);
         preferencesPanel.add(nOfRangesLabel);
@@ -161,13 +160,11 @@ public class ViewImpl extends JFrame implements View {
         this.controller = controller;
     }
 
-
     @Override
     public void updateAlgorithmStatus(final AlgorithmStatus status) {
         this.status = status;
         SwingUtilities.invokeLater(() -> {
             switch (this.status) {
-
                 case IDLE -> {
                     statusLabel.setText("Status: Idle");
                     statusLabel.setBackground(Color.LIGHT_GRAY);
