@@ -60,4 +60,9 @@ public class TaskBasedSourceAnalyzer implements SourceAnalyzer {
         this.pathProducerExecutor.submit(() -> this.scanTask(directory));
         return this.liveReport;
     }
+
+    @Override
+    public void stop() {
+        throw new RuntimeException();
+    }
 }

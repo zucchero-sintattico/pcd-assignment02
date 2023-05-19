@@ -30,5 +30,10 @@ public class EventBasedSourceAnalyser implements SourceAnalyzer {
         return liveReport;
     }
 
+    @Override
+    public void stop() {
+        throw new RuntimeException();
+    }
+
 
 }
