@@ -11,6 +11,12 @@ import java.util.concurrent.Executors;
 public class ExecutorBasedLiveReport extends LiveReport {
 
     private final ExecutorService handlerExecutor = Executors.newSingleThreadExecutor();
+    
+    @Override
+    public void complete() {
+        handlerExecutor.shutdown();
+        super.complete();
+    }
 
     @Override
     protected void notifyNumberOfFilesChanged(final int newNumber) {
