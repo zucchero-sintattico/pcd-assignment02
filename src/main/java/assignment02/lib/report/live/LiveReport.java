@@ -107,11 +107,6 @@ public class LiveReport extends Monitor implements ReportAsyncBuilder, Observabl
         this.monitored(() -> this.distributionChangeListeners.add(listener));
     }
 
-    @Override
-    public void stop() {
-        this.complete();
-    }
-
     protected void notifyDistributionChange(final Map<Range, Integer> newDistribution) {
         this.distributionChangeListeners.forEach(x -> x.accept(newDistribution));
     }

@@ -65,5 +65,6 @@ public class TaskBasedSourceAnalyzer implements SourceAnalyzer {
     public void stop() {
         this.pathProducerExecutor.shutdownNow();
         this.pathConsumerExecutor.shutdownNow();
+        this.liveReport.complete();
     }
 }
