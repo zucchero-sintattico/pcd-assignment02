@@ -1,6 +1,5 @@
 package assignment02.mvc.controller;
 
-import assignment02.AnalyzerType;
 import assignment02.SourceAnalyzer;
 import assignment02.event.EventBasedSourceAnalyser;
 import assignment02.executor.TaskBasedSourceAnalyzer;

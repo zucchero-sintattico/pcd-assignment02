@@ -1,20 +1,18 @@
 package assignment02.mvc.view;
 
 
-import assignment02.AnalyzerType;
 import assignment02.lib.report.Range;
 import assignment02.lib.report.Statistic;
+import assignment02.mvc.controller.AnalyzerType;
 import assignment02.mvc.controller.Controller;
 import assignment02.mvc.model.AlgorithmStatus;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.nio.file.Path;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +76,8 @@ public class ViewImpl extends JFrame implements View {
         final Supplier<Boolean> canStart = () -> this.selectedPath != null &&
                 !maxLinesText.getText().equals("") &&
                 !nOfRangesText.getText().equals("") &&
-                !topNText.getText().equals("");
+                !topNText.getText().equals("") &&
+                !status.equals(AlgorithmStatus.RUNNING);
 
         // aggiungo un listener ai bottoni per cambiare il colore del riquadro status
         startButton.addActionListener(e -> {
@@ -95,8 +94,11 @@ public class ViewImpl extends JFrame implements View {
                 ;
             }
         });
+
         stopButton.addActionListener(e -> {
-            controller.stopAlgorithm();
+            if (status.equals(AlgorithmStatus.RUNNING)) {
+                controller.stopAlgorithm();
+            }
         });
 
         // aggiungo i componenti al panel C
@@ -162,8 +164,10 @@ public class ViewImpl extends JFrame implements View {
 
     @Override
     public void updateAlgorithmStatus(final AlgorithmStatus status) {
+        this.status = status;
         SwingUtilities.invokeLater(() -> {
-            switch (status) {
+            switch (this.status) {
+
                 case IDLE -> {
                     statusLabel.setText("Status: Idle");
                     statusLabel.setBackground(Color.LIGHT_GRAY);
