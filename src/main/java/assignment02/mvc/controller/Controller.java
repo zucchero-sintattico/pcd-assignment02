@@ -1,6 +1,5 @@
 package assignment02.mvc.controller;
 
-import assignment02.AnalyzerType;
 import assignment02.mvc.view.View;
 
 import java.nio.file.Path;

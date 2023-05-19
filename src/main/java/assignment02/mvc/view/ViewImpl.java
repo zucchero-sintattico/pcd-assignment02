@@ -1,7 +1,7 @@
 package assignment02.mvc.view;
 
 
-import assignment02.AnalyzerType;
+import assignment02.mvc.controller.AnalyzerType;
 import assignment02.lib.report.Range;
 import assignment02.lib.report.Statistic;
 import assignment02.mvc.controller.Controller;

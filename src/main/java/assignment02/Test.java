@@ -1,9 +1,11 @@
 package assignment02;
+
 import assignment02.event.EventBasedSourceAnalyser;
 import assignment02.executor.TaskBasedSourceAnalyzer;
 import assignment02.lib.report.Report;
 import assignment02.lib.report.ReportConfiguration;
 
+import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.concurrent.Future;
@@ -16,7 +18,12 @@ public class Test {
         time = test.RunExecutorBasedSourceAnalyzer();
         System.out.println("ExecutorBasedSourceAnalyzer: " + time + "ms");
     }
-    long RunEventBasedSourceAnalyser(){
+
+    long RunEventBasedSourceAnalyser() {
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        final PrintStream ps = new PrintStream(outputStream);
+        final PrintStream old = System.out;
+        System.setOut(ps);
         final ReportConfiguration configuration = new ReportConfiguration(3, 10, 20);
         final SourceAnalyzer sourceAnalyser = new EventBasedSourceAnalyser(configuration);
         final Future<Report> report = sourceAnalyser.getReport(Path.of("src"));
@@ -27,10 +34,12 @@ public class Test {
             e.printStackTrace();
         }
         final long toc = System.currentTimeMillis();
+        System.out.flush();
+        System.setOut(old);
         return toc - tic;
     }
 
-    long RunExecutorBasedSourceAnalyzer(){
+    long RunExecutorBasedSourceAnalyzer() {
         final ReportConfiguration configuration = new ReportConfiguration(3, 10, 20);
         final SourceAnalyzer sourceAnalyser = new TaskBasedSourceAnalyzer(configuration);
         final Future<Report> report = sourceAnalyser.getReport(Path.of("src"));
@@ -55,7 +64,6 @@ public class Test {
         long toc = System.currentTimeMillis();
         return toc - tic;
     }
-
 
 
 }
