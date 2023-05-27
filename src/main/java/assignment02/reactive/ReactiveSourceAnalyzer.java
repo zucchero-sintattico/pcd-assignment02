@@ -19,7 +19,6 @@ public class ReactiveSourceAnalyzer implements SourceAnalyzer {
 
     private final LiveReport liveReport = new ExecutorBasedLiveReport();
     private final StopMonitor stopMonitor = new StopMonitor();
-    private Observable<Path> source = null;
 
     public ReactiveSourceAnalyzer(ReportConfiguration configuration) {
         this.liveReport.setReportConfiguration(configuration);
@@ -29,7 +28,7 @@ public class ReactiveSourceAnalyzer implements SourceAnalyzer {
     public ObservableAsyncReport analyzeSources(Path directory) {
 
         // file walk
-        this.source = Observable.create(emitter -> {
+        Observable<Path> source = Observable.create(emitter -> {
             log("Start file walk");
             try (final var paths = Files.walk(directory)) {
                 paths.filter(Files::isRegularFile)
@@ -51,7 +50,7 @@ public class ReactiveSourceAnalyzer implements SourceAnalyzer {
             emitter.onComplete();
         });
 
-        Observable<Statistic> statsObservable = this.source
+        Observable<Statistic> statsObservable = source
                 .subscribeOn(Schedulers.io())
                 .mapOptional(p -> {
                     try {
