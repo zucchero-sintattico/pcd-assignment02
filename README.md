@@ -1,4 +1,3 @@
-# pcd-assignment02
 # Obiettivo del Progetto
 
 L'assignment consiste nell'affrontare il problema illustrato nel primo
